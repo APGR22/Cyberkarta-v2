@@ -1,0 +1,15 @@
+#Semua
+*
+
+#whitelist wajib meski masih bisa bekerja (seharusnya)
+!.gitignore
+
+#whitelist directory
+!Assets
+!ProjectSettings
+!UserSettings
+
+#whitelist files in directory and subdirectory
+!Assets/**
+!ProjectSettings/**
+!UserSettings/**
