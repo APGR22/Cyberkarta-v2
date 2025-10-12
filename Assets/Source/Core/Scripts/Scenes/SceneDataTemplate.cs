@@ -9,7 +9,7 @@ public enum SceneData
 public class SceneDataTemplate : MonoBehaviour
 {
     public SceneData[] scenes;
-    [HideInInspector] public bool hasScene = false;
+    [HideInInspector] public bool hasScene = false; //apakah sudah scene
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

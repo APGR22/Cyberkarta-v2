@@ -1,20 +1,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Fight : MonoBehaviour
 {
     public cbkta_GlobalUI cbkta_globalui;
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalStates cbkta_globalstates;
+    public cbkta_GlobalLogicHelper cbkta_globallogichelper;
+    public GameObject panel;
     public GameObject prefabKeyCombination;
     public GameObject parentForKeyCombination;
+    public Slider timer;
 
     private System.Random randomSystem;
 
     private int lastRandomValue = -1;
     private int sameRandomValueCount = 0;
     private int limitRandomValueCount = 0;
+
+    private bool stopTimer = false;
 
     private int fightTimes = 0;
     private int fightTimeCount = 1; //hitungannya segera bertambah setelah melakukan, jadi 1 kali
@@ -82,9 +88,28 @@ public class Fight : MonoBehaviour
         this.fightArrowControllerObjectsIndex = 0;
     }
 
+    void Restart()
+    {
+        this.DestroyObjects();
+        this.SpawnObjects();
+
+        this.timer.value = this.timer.maxValue;
+        this.stopTimer = false;
+    }
+
+    void OnShaken(GameObject obj)
+    {
+        this.panel.GetComponent<Image>().color = new Color(255, 0, 0);
+    }
+
+    void ExitShaken(GameObject obj)
+    {
+        this.panel.GetComponent<Image>().color = new Color(255, 255, 255);
+    }
+
     void Awake()
     {
-        this.randomSystem = new System.Random(System.Guid.NewGuid().GetHashCode());
+        this.randomSystem = this.cbkta_globallogichelper.GenerateRandomSystem();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -98,36 +123,100 @@ public class Fight : MonoBehaviour
     {
         if (!this.run) return;
 
-        if (this.fightArrowControllerObjectsIndex < this.fightArrowControllerObjects.Count)
+        if (this.timer.value != 0 && !this.stopTimer)
+        {
+            this.timer.value -= Time.deltaTime;
+        }
+
+        if (this.fightArrowControllerObjectsIndex < this.fightArrowControllerObjects.Count && this.timer.value > 0)
         {
             bool isKeyPressedCorrectly = this.fightArrowControllerObjects[this.fightArrowControllerObjectsIndex].IsKeyPressedCorrectly();
+            bool isKeyPressedWrongly = this.fightArrowControllerObjects[this.fightArrowControllerObjectsIndex].IsKeyPressedWrongly();
 
             if (isKeyPressedCorrectly)
             {
                 this.fightArrowControllerObjects[this.fightArrowControllerObjectsIndex].Explosion();
                 this.fightArrowControllerObjectsIndex++;
+
+                //jika di index terakhir
+                if (this.fightArrowControllerObjectsIndex == this.fightArrowControllerObjects.Count)
+                {
+                    this.stopTimer = true;
+                }
+            }
+            else if (isKeyPressedWrongly)
+            {
+                //player gagal menyerang dan berakhir diserang musuh
+
+                StatsController enemy_statscontroller = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<StatsController>();
+                enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
+
+                //getar
+                this.cbkta_globallogichelper.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
+                this.cbkta_globallogichelper.ShakeGameObject(this.cbkta_globalui.cam, 1);
+
+                //ulangi
+                this.Restart();
             }
         }
         else
         {
-            if (this.fightTimeCount == this.fightTimes && this.fightArrowControllerObjects.Last().isAnimationEnded)
+            //if (this.fightTimeCount == this.fightTimes && this.fightArrowControllerObjects.Last().isAnimationEnded)
+
+            //sesi dan animasi fight sudah selesai
+            if (this.fightArrowControllerObjects.Last().isAnimationEnded)
             {
-                //buat untuk exit dari fight
+                MainStats enemy_stats = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<MainStats>();
+                StatsController player_statscontroller = this.cbkta_globalobjects.player.GetComponent<StatsController>();
 
-                //trigger ke fungsi OnDisable()
-                gameObject.SetActive(false);
-            }
-            else if (this.fightArrowControllerObjects.Last().isAnimationEnded)
-            {
-                //buat untuk melanjutkan ke sesi fight berikutnya
+                //player berhasil menyerang musuh
+                player_statscontroller.Attack(this.cbkta_globalobjects.playerTriggeredWithObject);
 
-                this.DestroyObjects();
-                this.SpawnObjects();
+                //reset
+                this.timer.value = this.timer.maxValue;
 
-                this.fightTimeCount++;
+                //jika nyawa musuh habis
+                if (enemy_stats.healthPoint == 0)
+                {
+                    //buat untuk exit dari fight
+
+                    //trigger ke fungsi OnDisable()
+                    gameObject.SetActive(false);
+                }
+                //lanjut saja
+                else
+                {
+                    this.Restart();
+                }
             }
 
             //setup untuk berhenti atau lanjut ke berikutnya, bergantung terhadap nilai berapa banyak kali
+        }
+
+        //hasil
+
+        MainStats player_stats = this.cbkta_globalobjects.player.GetComponent<MainStats>();
+
+        //jika health player sudah habis duluan
+        if (player_stats.healthPoint == 0)
+        {
+            //nonaktifkan Fight
+            gameObject.SetActive(false);
+        }
+
+        if (this.timer.value == 0)
+        {
+            //player gagal menyerang dan berakhir diserang musuh
+
+            StatsController enemy_statscontroller = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<StatsController>();
+            enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
+
+            //getar
+            this.cbkta_globallogichelper.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
+            this.cbkta_globallogichelper.ShakeGameObject(this.cbkta_globalui.cam, 1);
+
+            //reset
+            this.Restart();
         }
     }
 

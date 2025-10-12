@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SceneDataTemplate))]
 public class DialogueTemplate : MonoBehaviour
 {
     //data field filled on Unity Inspector

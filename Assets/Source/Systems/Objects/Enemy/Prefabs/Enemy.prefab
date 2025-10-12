@@ -104,7 +104,6 @@ GameObject:
   - component: {fileID: 4387125482441507466}
   - component: {fileID: 5012985973932582623}
   - component: {fileID: 6741953021255092839}
-  - component: {fileID: 5525971127841137612}
   - component: {fileID: 4882822500032370516}
   m_Layer: 0
   m_Name: Enemy
@@ -286,18 +285,6 @@ MonoBehaviour:
   - Kamu!
   - Kamu Jelek!
   - Tidak ada yang mau infeksi denganmu!
---- !u!114 &5525971127841137612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7939844881753611927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3dc472b49c98dc44ac89f9faabe13fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FightDataTemplate
 --- !u!114 &4882822500032370516
 MonoBehaviour:
   m_ObjectHideFlags: 0

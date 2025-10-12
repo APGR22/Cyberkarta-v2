@@ -2,6 +2,7 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(SceneDataTemplate))]
 public class FightArrowController : MonoBehaviour
 {
     public int minArrowCounts = 3;
@@ -28,6 +29,22 @@ public class FightArrowController : MonoBehaviour
     public bool IsKeyPressedCorrectly()
     {
         return Input.GetKeyDown(this.keyCode);
+    }
+
+    public bool IsKeyPressedWrongly()
+    {
+        //jika suatu tombol ditekan dan tipe arrow yang dimiliki tidak sesuai
+
+        foreach (FightDataType type in System.Enum.GetValues(typeof(FightDataType)))
+        {
+            if (Input.GetKeyDown(this.ConvertToKeyCode(type)) && this.arrowType != type)
+            {
+                //true jika suatu tombol yang salah ditekan
+                return true;
+            }
+        }
+
+        return false;
     }
 
     [ContextMenu("ulang")]
