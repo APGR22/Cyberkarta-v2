@@ -15,9 +15,11 @@ GameObject:
   - component: {fileID: 2508310910220848743}
   - component: {fileID: 6940588726055167556}
   - component: {fileID: 8857416320418053471}
+  - component: {fileID: 54644896499643890}
+  - component: {fileID: 1798454259689788397}
   m_Layer: 5
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,7 +97,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 50
   m_Sprite: {fileID: 21300000, guid: 08197ada53fa5644daf7f8ebe654f81c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -216,3 +218,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   cbkta_globalobjects: {fileID: 0}
   cbkta_globalui: {fileID: 0}
+--- !u!114 &54644896499643890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7506684499792763278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b64523750ec17d140966c25e0febb1cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainStats
+  cbkta_globallogichelper: {fileID: 0}
+  healthPoint: 5
+  damagePower: 1
+  useRandom: 0
+  minHealthPoint: 0
+  maxHealthPoint: 0
+  minDamagePower: 0
+  maxDamagePower: 0
+--- !u!114 &1798454259689788397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7506684499792763278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b93ee9cf1d42f5841a3db967bcb6771b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatsController
