@@ -1,0 +1,5 @@
+-Weeping.mp3/Weeping_(Guiter_only).mp3 untuk cutscene
+-AmbietLandfill.mp3 untuk di downtown?(Gw lupa nama nya :3)
+-Byebyte.mp3 untuk di lab (kalau ada, kalau nga ada terserah lu)
+-N.mp3 saya tidak ada ide untuk dimana
+-Ambient1.mp3 untuk ambient dimana saja terserah

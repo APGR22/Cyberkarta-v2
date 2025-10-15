@@ -7,9 +7,10 @@ public class cbkta_GlobalUI : MonoBehaviour
     public GameObject cam;
     public CinemachineCamera cinemachineCamera;
     public UIControls controls;
-    public GameObject dialog;
-    public GameObject pauseMenu;
-    public GameObject fight;
+    public GameObject dialog = null;
+    public GameObject pauseMenu = null;
+    public GameObject fight = null;
+    public GameObject canvas;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

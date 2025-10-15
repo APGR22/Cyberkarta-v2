@@ -9,6 +9,7 @@ public class Fight : MonoBehaviour
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalStates cbkta_globalstates;
     public cbkta_GlobalLogicHelper cbkta_globallogichelper;
+    public VisualShake visualShake;
     public GameObject panel;
     public GameObject prefabKeyCombination;
     public GameObject parentForKeyCombination;
@@ -152,8 +153,8 @@ public class Fight : MonoBehaviour
                 enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
 
                 //getar
-                this.cbkta_globallogichelper.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
-                this.cbkta_globallogichelper.ShakeGameObject(this.cbkta_globalui.cam, 1);
+                this.visualShake.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
+                this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1);
 
                 //ulangi
                 this.Restart();
@@ -212,8 +213,8 @@ public class Fight : MonoBehaviour
             enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
 
             //getar
-            this.cbkta_globallogichelper.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
-            this.cbkta_globallogichelper.ShakeGameObject(this.cbkta_globalui.cam, 1);
+            this.visualShake.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
+            this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1);
 
             //reset
             this.Restart();
