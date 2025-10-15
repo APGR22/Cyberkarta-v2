@@ -36,8 +36,11 @@ public class cbkta_GlobalLogic : MonoBehaviour
         this.UIControlsEnabled = !this.UIControlsEnabled;
     }
 
-    public void NextScene(int sceneIndex)
-    {}
+    public void NextScene()
+    {
+        this.cbkta_globalstates.sceneIndex++;
+        SceneManager.LoadScene(this.cbkta_globalstates.sceneIndex);
+    }
 
     void Awake()
     {
