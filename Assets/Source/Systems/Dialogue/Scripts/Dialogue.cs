@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour
 {
@@ -7,6 +8,12 @@ public class Dialogue : MonoBehaviour
     public cbkta_GlobalStates cbkta_globalstates;
     public cbkta_GlobalObjects cbkta_globalobjects;
     public TextMeshProUGUI tmpui;
+    public Image icon;
+
+    /// <summary>
+    /// Informasi oleh SceneDirector
+    /// </summary>
+    [HideInInspector] public int dialogueIndex = 0;
 
     private bool hasInit = false;
     private DialogueTemplate dialogue = null;
@@ -58,7 +65,7 @@ public class Dialogue : MonoBehaviour
         //increment
         this.visibleText++;
 
-        //pastikan dan paksa hanya di dalam range panjang text asli
+        //pastikan dan paksa hanya di dalam range panjang data asli
         this.visibleText = Mathf.Clamp(this.visibleText, 0, this.totalChars);
 
         //update
@@ -79,12 +86,13 @@ public class Dialogue : MonoBehaviour
             this.visibleText = this.totalChars;
             return;
         }
-        this.visibleText = 0; //reset karena ini text berikutnya
+        this.visibleText = 0; //reset karena ini data berikutnya
 
         bool isEnded = false;
-        string text = this.dialogue.GetText(nextText, out isEnded);
+        DialogueData data = this.dialogue.GetText(this.dialogueIndex, this.nextText, out isEnded);
 
-        this.TypeText(text);
+        this.TypeText(data.text);
+        this.icon.sprite = data.icon;
 
         this.nextText++;
 
@@ -189,9 +197,9 @@ public class Dialogue : MonoBehaviour
 //        this.visibleText = 0; //reset karena dialog selanjutnya
 
 //        bool isEnded = false; //cek apakah index sudah berada di akhir
-//        string text = this.dialogue.GetText(nextText, out isEnded);
+//        string data = this.dialogue.GetText(nextText, out isEnded);
 
-//        this.tmpui.text = text;
+//        this.tmpui.data = data;
 //        this.tmpui.ForceMeshUpdate(); // Perlu kah?
 
 //        this.nextText++;
@@ -217,7 +225,7 @@ public class Dialogue : MonoBehaviour
 //        //increment
 //        this.visibleText++;
 
-//        //pastikan dan paksa hanya di dalam range panjang text asli
+//        //pastikan dan paksa hanya di dalam range panjang data asli
 //        this.visibleText = Mathf.Clamp(this.visibleText, 0, this.totalChars);
 
 //        //update

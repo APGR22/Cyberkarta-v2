@@ -70,14 +70,22 @@ public class FightArrowController : MonoBehaviour
         {
             case FightDataType.arrowUp:
                 transform.Rotate(0, 0, 90);
+
+                spriteRenderer.color = Color.blue;
                 break;
             case FightDataType.arrowDown:
                 transform.Rotate(0, 0, -90);
+
+                spriteRenderer.color = Color.red;
                 break;
             case FightDataType.arrowLeft:
                 spriteRenderer.flipX = true;
+
+                spriteRenderer.color = Color.gray;
                 break;
             case FightDataType.arrowRight:
+
+                spriteRenderer.color = Color.yellow;
                 break;
         }
 

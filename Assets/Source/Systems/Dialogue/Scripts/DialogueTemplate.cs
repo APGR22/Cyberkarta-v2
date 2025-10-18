@@ -1,27 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
+
 
 [RequireComponent(typeof(SceneDataTemplate))]
 public class DialogueTemplate : MonoBehaviour
 {
     //data field filled on Unity Inspector
-    public string[] text;
+    public DialogueData2D[] data;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="num"></param>
     /// <param name="isEnded">Mendapatkan true jika num-nya merupakan index terakhir</param>
-    /// <returns>Mengembalikan "" jika sudah diluar jangkauan</returns>
-    public string GetText(int num, out bool isEnded)
+    /// <returns>Mengembalikan null jika sudah diluar jangkauan</returns>
+    public DialogueData GetText(int index, int num, out bool isEnded)
     {
-        isEnded = num == this.text.Length - 1;
+        isEnded = num == this.data[index].data.Length - 1;
 
-        if (num >= this.text.Length)
+        if (num >= this.data[index].data.Length)
         {
-            return "";
+            return null;
         }
 
-        return this.text[num];
+        return this.data[index].data[num];
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

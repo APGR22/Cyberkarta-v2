@@ -1,7 +1,11 @@
 using UnityEngine;
 
-public class DialogueDataEntry : MonoBehaviour
+public class cbkta_GlobalTags : MonoBehaviour
 {
+    public string player = "Player";
+    public string enemy = "Enemy";
+    public string npc = "NPC";
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

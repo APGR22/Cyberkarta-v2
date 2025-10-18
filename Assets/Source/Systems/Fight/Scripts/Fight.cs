@@ -15,6 +15,10 @@ public class Fight : MonoBehaviour
     public GameObject parentForKeyCombination;
     public Slider timer;
 
+    [Header("Determinator")]
+    public bool shakeCamera = false;
+    public bool shakePanel = true;
+
     private System.Random randomSystem;
 
     private int lastRandomValue = -1;
@@ -28,6 +32,7 @@ public class Fight : MonoBehaviour
 
     private bool run = false;
     private bool isAnimationEnded = false;
+    private bool isShaken = false;
 
     private List<FightArrowController> fightArrowControllerObjects = new();
     private int fightArrowControllerObjectsIndex = 0;
@@ -67,9 +72,11 @@ public class Fight : MonoBehaviour
         //munculkan objek dengan jumlah yang sudah ditentukan secara random
         for (int i = 0; i < objCount; i++)
         {
+            //mengkloning objek dan mendapatkan komponennya
             GameObject obj = Instantiate(this.prefabKeyCombination, this.parentForKeyCombination.transform);
             FightArrowController fightArrowController = obj.GetComponent<FightArrowController>();
 
+            //inisialisasi
             fightArrowController.Init(GetRandomValue());
             this.fightArrowControllerObjects.Add(fightArrowController);
         }
@@ -98,14 +105,17 @@ public class Fight : MonoBehaviour
         this.stopTimer = false;
     }
 
-    void OnShaken(GameObject obj)
+    void OnShaken(GameObject obj = null)
     {
-        this.panel.GetComponent<Image>().color = new Color(255, 0, 0);
+        //this.panel.GetComponent<Image>().color = new Color(255, 0, 0);
+        //this.isShaken = true;
     }
 
-    void ExitShaken(GameObject obj)
+    void ExitShaken(GameObject obj = null)
     {
         this.panel.GetComponent<Image>().color = new Color(255, 255, 255);
+
+        this.isShaken = false;
     }
 
     void Awake()
@@ -153,8 +163,24 @@ public class Fight : MonoBehaviour
                 enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
 
                 //getar
-                this.visualShake.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
-                this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1);
+                if (!this.isShaken)
+                {
+                    if (this.shakePanel) this.visualShake.ShakeGameObject(this.panel, 10, .3f,
+                        (GameObject obj) =>
+                        {
+                            this.panel.GetComponent<Image>().color = new Color(255, 0, 0);
+                        },
+                        (obj) =>
+                        {
+                            this.panel.GetComponent<Image>().color = new Color(255, 255, 255);
+                            this.ExitShaken(obj);
+                        }
+                    );
+
+                    if (this.shakeCamera) this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1, .3f, null, this.ExitShaken);
+
+                    this.OnShaken();
+                }
 
                 //ulangi
                 this.Restart();
@@ -213,8 +239,24 @@ public class Fight : MonoBehaviour
             enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
 
             //getar
-            this.visualShake.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
-            this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1);
+            if (!this.isShaken)
+            {
+                if (this.shakePanel) this.visualShake.ShakeGameObject(this.panel, 10, .3f,
+                    (GameObject obj) =>
+                    {
+                        this.panel.GetComponent<Image>().color = new Color(255, 0, 0);
+                    },
+                    (obj) =>
+                    {
+                        this.panel.GetComponent<Image>().color = new Color(255, 255, 255);
+                        this.ExitShaken(obj);
+                    }
+                );
+
+                if (this.shakeCamera) this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1, .3f, null, this.ExitShaken);
+
+                this.OnShaken();
+            }
 
             //reset
             this.Restart();

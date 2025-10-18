@@ -5,6 +5,7 @@ public class SceneDirector : MonoBehaviour
     public cbkta_GlobalUI cbkta_globalui;
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalStates cbkta_globalstates;
+    public cbkta_GlobalTags cbkta_globaltags;
 
     private bool run = false;
     private bool exit = false;
@@ -17,6 +18,11 @@ public class SceneDirector : MonoBehaviour
 
     //dari penekanan trigger
     private bool pressE = false;
+
+    /// <summary>
+    /// untuk dialogue
+    /// </summary>
+    private int dialogueIndex = 0;
 
     void FreezePlayer()
     {
@@ -64,6 +70,7 @@ public class SceneDirector : MonoBehaviour
     void EnterDialogueScene()
     {
         this.cbkta_globalui.dialog.SetActive(true);
+        this.cbkta_globalui.dialog.GetComponent<Dialogue>().dialogueIndex = this.dialogueIndex;
 
         this.cbkta_globalstates.isEnterDialog = true;
     }
@@ -73,6 +80,7 @@ public class SceneDirector : MonoBehaviour
         this.cbkta_globalui.dialog.SetActive(false);
 
         this.cbkta_globalstates.isEnterDialog = false;
+        this.dialogueIndex++; //dialog berikutnya jika masih ada dialog lagi di daftar scene
     }
 
     void EnterFightScene()
@@ -88,7 +96,8 @@ public class SceneDirector : MonoBehaviour
     bool CompareWithSceneTags(GameObject obj)
     {
         if (obj.CompareTag("DialogTrigger")) return true;
-        if (obj.CompareTag("Enemy")) return true;
+        if (obj.CompareTag(this.cbkta_globaltags.enemy)) return true;
+        if (obj.CompareTag(this.cbkta_globaltags.npc)) return true;
 
         return false;
     }
@@ -96,12 +105,13 @@ public class SceneDirector : MonoBehaviour
     void Awake()
     {
         this.ExitDialogueScene();
+        this.dialogueIndex = 0; //reset karena ditambah otomatis oleh ExitDialogueScene
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -218,6 +228,8 @@ public class SceneDirector : MonoBehaviour
             //    default:
             //        break;
             //}
+
+            this.dialogueIndex = 0;
 
             this.ExitScene();
 

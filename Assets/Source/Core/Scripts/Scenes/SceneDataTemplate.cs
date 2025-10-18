@@ -4,6 +4,7 @@ public enum SceneData
 {
     Dialog,
     Fight,
+    SceneFight
 }
 
 public class SceneDataTemplate : MonoBehaviour
