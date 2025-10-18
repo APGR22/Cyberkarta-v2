@@ -1,5 +1,6 @@
 #Semua
 *
+ProjectSettings/EditorBuildSettings.asset
 
 #whitelist wajib meski masih bisa bekerja (seharusnya)
 !.gitignore
@@ -13,4 +14,3 @@
 !Assets/**
 !ProjectSettings/**
 !UserSettings/**
-ProjectSettings/EditorBuildSettings.asset
