@@ -7,6 +7,10 @@ TagManager:
   - Ground
   - Enemy
   - DialogTrigger
+  - Canvas
+  - Global Sharing Information
+  - Unity Scenes Entering
+  - NPC
   layers:
   - Default
   - TransparentFX

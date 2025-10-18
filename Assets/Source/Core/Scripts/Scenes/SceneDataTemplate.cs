@@ -4,6 +4,7 @@ public enum SceneData
 {
     Dialog,
     Fight,
+    Subconscious,
 }
 
 public class SceneDataTemplate : MonoBehaviour

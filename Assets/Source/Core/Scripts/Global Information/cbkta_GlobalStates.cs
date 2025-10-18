@@ -10,7 +10,8 @@ public class cbkta_GlobalStates : MonoBehaviour
 
     public bool isInteractionTrigger = false;
 
-    public int sceneIndex = 0;
+    [Header("Scenes")]
+    public bool isSceneFightDone = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

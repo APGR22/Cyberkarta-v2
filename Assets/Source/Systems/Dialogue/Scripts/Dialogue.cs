@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class Dialogue : MonoBehaviour
     public cbkta_GlobalStates cbkta_globalstates;
     public cbkta_GlobalObjects cbkta_globalobjects;
     public TextMeshProUGUI tmpui;
+    public SpriteRenderer icon;
 
     private bool hasInit = false;
     private DialogueTemplate dialogue = null;
@@ -82,9 +84,10 @@ public class Dialogue : MonoBehaviour
         this.visibleText = 0; //reset karena ini text berikutnya
 
         bool isEnded = false;
-        string text = this.dialogue.GetText(nextText, out isEnded);
+        DialogData data = this.dialogue.GetText(nextText, out isEnded);
 
-        this.TypeText(text);
+        this.TypeText(data.text);
+        this.icon.sprite = data.sprite;
 
         this.nextText++;
 

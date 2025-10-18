@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Fight : MonoBehaviour
@@ -15,6 +16,10 @@ public class Fight : MonoBehaviour
     public GameObject parentForKeyCombination;
     public Slider timer;
 
+    [Header("Settings")]
+    public bool isPanelShaken = false;
+    public bool isCameraShaken = false;
+
     private System.Random randomSystem;
 
     private int lastRandomValue = -1;
@@ -28,6 +33,8 @@ public class Fight : MonoBehaviour
 
     private bool run = false;
     private bool isAnimationEnded = false;
+
+    private bool isShaken = false;
 
     private List<FightArrowController> fightArrowControllerObjects = new();
     private int fightArrowControllerObjectsIndex = 0;
@@ -106,6 +113,8 @@ public class Fight : MonoBehaviour
     void ExitShaken(GameObject obj)
     {
         this.panel.GetComponent<Image>().color = new Color(255, 255, 255);
+
+        this.isShaken = false;
     }
 
     void Awake()
@@ -153,8 +162,13 @@ public class Fight : MonoBehaviour
                 enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
 
                 //getar
-                this.visualShake.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
-                this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1);
+                if (!this.isShaken)
+                {
+                    if (this.isPanelShaken) this.visualShake.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
+                    if (this.isCameraShaken) this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1);
+
+                    this.isShaken = true;
+                }
 
                 //ulangi
                 this.Restart();
@@ -213,8 +227,13 @@ public class Fight : MonoBehaviour
             enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
 
             //getar
-            this.visualShake.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
-            this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1);
+            if (!this.isShaken)
+            {
+                if (this.isPanelShaken) this.visualShake.ShakeGameObject(this.panel, 10, .3f, this.OnShaken, this.ExitShaken);
+                if (this.isCameraShaken) this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1);
+
+                this.isShaken = true;
+            }
 
             //reset
             this.Restart();

@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class DialogueDataEntry : MonoBehaviour
+public class cbkta_GlobalScenes : MonoBehaviour
 {
+    [HideInInspector] public string fightInSubconcious = "Fight";
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -1,10 +1,15 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneDirector : MonoBehaviour
 {
     public cbkta_GlobalUI cbkta_globalui;
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalStates cbkta_globalstates;
+    public cbkta_GlobalScenes cbkta_globalscenes;
+    public cbkta_GlobalTags cbkta_globaltags;
+    public UnityScenesController unityScenesController;
+    public cbkta_GlobalGameObjectsNotDuplicated cbkta_globalgameobjectsnotduplicated;
 
     private bool run = false;
     private bool exit = false;
@@ -85,10 +90,55 @@ public class SceneDirector : MonoBehaviour
         this.cbkta_globalui.fight.SetActive(false);
     }
 
+    void EnterFightInSubconciousScene()
+    {
+        this.unityScenesController.HideMinorSceneVisibility(SceneManager.GetActiveScene(), () =>
+        {
+            AsyncOperation op = SceneManager.LoadSceneAsync(this.cbkta_globalscenes.fightInSubconcious, LoadSceneMode.Additive);
+            op.completed += (AsyncOperation obj) =>
+            {
+                this.unityScenesController.ShowMinorSceneVisibility(SceneManager.GetSceneByName(this.cbkta_globalscenes.fightInSubconcious));
+
+                foreach (GameObject gameObject in this.cbkta_globalgameobjectsnotduplicated.gameObjects)
+                {
+                    if (gameObject == this.gameObject) return;
+
+                    gameObject.SetActive(false);
+
+                    GameObject gObj = GameObject.FindWithTag(this.cbkta_globaltags.globalSharingInformation);
+                    cbkta_GlobalSharingInformation gSI = gObj.GetComponent<cbkta_GlobalSharingInformation>();
+
+                    GameObject objWithPlayer = this.cbkta_globalobjects.playerTriggeredWithObject;
+                    if (objWithPlayer == null) return;
+                    if (!this.CompareWithSceneTags(objWithPlayer)) return;
+
+                    SceneFightDialogDataTemplate objWithPlayerSFDDT = objWithPlayer.GetComponent<SceneFightDialogDataTemplate>();
+                    SceneFightFightDataTemplate objWithPlayerSFFDT = objWithPlayer.GetComponent<SceneFightFightDataTemplate>();
+
+                    gSI.SendInformationForFightScene(objWithPlayerSFDDT, objWithPlayerSFFDT);
+
+                    this.unityScenesController.EnterAnotherScene(SceneManager.GetSceneByName(this.cbkta_globalscenes.fightInSubconcious));
+                }
+            };
+        }
+        );
+    }
+
+    void ExitFightInSubconciousScene()
+    {
+        this.unityScenesController.HideMinorSceneVisibility(SceneManager.GetSceneByName(this.cbkta_globalscenes.fightInSubconcious), () =>
+        {
+            this.unityScenesController.ShowMinorSceneVisibility(SceneManager.GetActiveScene());
+            SceneManager.UnloadSceneAsync(this.cbkta_globalscenes.fightInSubconcious);
+        }
+        );
+    }
+
     bool CompareWithSceneTags(GameObject obj)
     {
         if (obj.CompareTag("DialogTrigger")) return true;
-        if (obj.CompareTag("Enemy")) return true;
+        if (obj.CompareTag(this.cbkta_globaltags.enemy)) return true;
+        if (obj.CompareTag("NPC")) return true;
 
         return false;
     }
@@ -110,6 +160,9 @@ public class SceneDirector : MonoBehaviour
         if (this.playerPositionStayedOn != Vector3.zero) this.FreezePlayer();
 
         //---
+
+        ////jika dialog dan belum interaksi, skip ke berikut saja
+        //if (!this.cbkta_globalstates.isInteractionTrigger) return;
 
         //deteksi jika men-trigger sesuatu sesuai scene tags
         bool isSomethingTriggered = false;
@@ -136,7 +189,7 @@ public class SceneDirector : MonoBehaviour
         //---
 
         //pertama kali
-        if (!run && isSomethingTriggered && !exit)
+        if (!run && isSomethingTriggered && !exit && this.cbkta_globalstates.isInteractionTrigger)
         {
             this.listSceneData = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<SceneDataTemplate>().scenes;
             this.sceneIndex = 0;
@@ -144,13 +197,13 @@ public class SceneDirector : MonoBehaviour
             switch (this.listSceneData[this.sceneIndex])
             {
                 case SceneData.Dialog:
-                    //jika dialog dan belum interaksi, skip ke berikut saja
-                    if (!this.cbkta_globalstates.isInteractionTrigger) return;
-
                     this.EnterDialogueScene();
                     break;
                 case SceneData.Fight:
                     this.EnterFightScene();
+                    break;
+                case SceneData.Subconscious:
+                    this.EnterFightInSubconciousScene();
                     break;
                 default:
                     break;
@@ -197,6 +250,9 @@ public class SceneDirector : MonoBehaviour
                     case SceneData.Fight:
                         this.EnterFightScene();
                         break;
+                    case SceneData.Subconscious:
+                        this.EnterFightInSubconciousScene();
+                        break;
                     default:
                         break;
                 }
@@ -241,7 +297,7 @@ public class SceneDirector : MonoBehaviour
         //        (
         //            this.cbkta_globalobjects.playerTriggeredWithObject.CompareTag("DialogTrigger")
         //            ||
-        //            this.cbkta_globalobjects.playerTriggeredWithObject.CompareTag("Enemy")
+        //            this.cbkta_globalobjects.playerTriggeredWithObject.CompareTag(this.cbkta_globaltags.objWithPlayer)
         //        );
 
         //    if (isPlayerTriggedDialogue)

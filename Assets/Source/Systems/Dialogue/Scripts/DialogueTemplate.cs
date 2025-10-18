@@ -4,21 +4,21 @@ using UnityEngine;
 public class DialogueTemplate : MonoBehaviour
 {
     //data field filled on Unity Inspector
-    public string[] text;
+    public DialogData[] text;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="num"></param>
     /// <param name="isEnded">Mendapatkan true jika num-nya merupakan index terakhir</param>
-    /// <returns>Mengembalikan "" jika sudah diluar jangkauan</returns>
-    public string GetText(int num, out bool isEnded)
+    /// <returns>Mengembalikan DialogData() jika sudah diluar jangkauan</returns>
+    public DialogData GetText(int num, out bool isEnded)
     {
         isEnded = num == this.text.Length - 1;
 
         if (num >= this.text.Length)
         {
-            return "";
+            return new();
         }
 
         return this.text[num];

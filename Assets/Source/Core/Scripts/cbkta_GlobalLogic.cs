@@ -6,8 +6,10 @@ public class cbkta_GlobalLogic : MonoBehaviour
 {
     public cbkta_GlobalUI cbkta_globalui;
     public cbkta_GlobalStates cbkta_globalstates;
+    public cbkta_GlobalTags cbkta_globaltags;
 
     private bool UIControlsEnabled = true;
+    private GameObject globalsharinginfo;
 
     //also used for "Continue" button
     public void TogglePauseMenu()
@@ -38,13 +40,17 @@ public class cbkta_GlobalLogic : MonoBehaviour
 
     public void NextScene()
     {
-        this.cbkta_globalstates.sceneIndex++;
-        SceneManager.LoadScene(this.cbkta_globalstates.sceneIndex);
+        int index = SceneManager.GetActiveScene().buildIndex;
+        index++;
+        SceneManager.LoadScene(index);
     }
 
     void Awake()
     {
         this.cbkta_globalui.controls = new();
+
+        this.globalsharinginfo = GameObject.FindWithTag(this.cbkta_globaltags.globalSharingInformation);
+        //if (this.globalsharinginfo != null ? this.globalsharinginfo.scene.name != "DontDestroyOnLoad" : false) DontDestroyOnLoad(this.globalsharinginfo);
 
         /**setup**/
 
