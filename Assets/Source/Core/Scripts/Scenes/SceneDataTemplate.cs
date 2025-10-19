@@ -4,7 +4,8 @@ public enum SceneData
 {
     Dialog,
     Fight,
-    SceneFight
+    EnterSecondEnvironment,
+    ExitSecondEnvironment,
 }
 
 public class SceneDataTemplate : MonoBehaviour

@@ -16,13 +16,16 @@ public class SceneDirector : MonoBehaviour
     //dari informasi luar
     private SceneData[] listSceneData = null;
 
-    //dari penekanan trigger
-    private bool pressE = false;
-
     /// <summary>
     /// untuk dialogue
     /// </summary>
     private int dialogueIndex = 0;
+    /// <summary>
+    /// untuk SecondEnvironment
+    /// </summary>
+    private int secondEnvironmentIndex = 0;
+
+    private bool forceNextScene = false;
 
     void FreezePlayer()
     {
@@ -69,8 +72,10 @@ public class SceneDirector : MonoBehaviour
 
     void EnterDialogueScene()
     {
+        Dialogue dialog = this.cbkta_globalui.dialog.GetComponent<Dialogue>();
+        dialog.dialogueIndex = this.dialogueIndex;
+
         this.cbkta_globalui.dialog.SetActive(true);
-        this.cbkta_globalui.dialog.GetComponent<Dialogue>().dialogueIndex = this.dialogueIndex;
 
         this.cbkta_globalstates.isEnterDialog = true;
     }
@@ -91,6 +96,54 @@ public class SceneDirector : MonoBehaviour
     void ExitFightScene()
     {
         this.cbkta_globalui.fight.SetActive(false);
+    }
+
+    void EnterSecondEnvironmentScene()
+    {
+        //setup
+
+        GameObject obj = this.cbkta_globalobjects.playerTriggeredWithObject;
+        SecondEnvironmentsDataTemplate secondEnvironmentsDataTemplate = obj.GetComponent<SecondEnvironmentsDataTemplate>();
+
+        GameObject secondEnvironments = this.cbkta_globalui.secondEnvironments;
+        SecondEnvironmentsController secondEnvironmentsController = secondEnvironments.GetComponent<SecondEnvironmentsController>();
+
+        //setting
+        this.cbkta_globalstates.isSceneInterrupted = true;
+        secondEnvironmentsController.environmentData = secondEnvironmentsDataTemplate.environmentData[this.secondEnvironmentIndex];
+
+        //start
+        this.cbkta_globalui.fadeController.FadeIn(() =>
+        {
+            this.cbkta_globalui.secondEnvironments.SetActive(true);
+            this.cbkta_globalui.fadeController.FadeOut(() =>
+            {
+                //done
+                this.cbkta_globalstates.isSceneInterrupted = false;
+            });
+        });
+
+        this.secondEnvironmentIndex++; //untuk environment berikutnya jika ada
+    }
+
+    void ExitSecondEnvironmentScene()
+    {
+        //setup
+        GameObject secondEnvironments = this.cbkta_globalui.secondEnvironments;
+
+        //setting
+        this.cbkta_globalstates.isSceneInterrupted = true;
+
+        //start
+        this.cbkta_globalui.fadeController.FadeIn(() =>
+        {
+            this.cbkta_globalui.secondEnvironments.SetActive(false);
+            this.cbkta_globalui.fadeController.FadeOut(() =>
+            {
+                //done
+                this.cbkta_globalstates.isSceneInterrupted = false;
+            });
+        });
     }
 
     bool CompareWithSceneTags(GameObject obj)
@@ -162,6 +215,9 @@ public class SceneDirector : MonoBehaviour
                 case SceneData.Fight:
                     this.EnterFightScene();
                     break;
+                case SceneData.EnterSecondEnvironment:
+                    this.EnterSecondEnvironmentScene();
+                    break;
                 default:
                     break;
             }
@@ -176,10 +232,12 @@ public class SceneDirector : MonoBehaviour
         //---
 
         //hanya jika saat running, belum exit
-        if (run && !exit)
+        if (run && !exit && !this.cbkta_globalstates.isSceneInterrupted)
         {
-            if (this.cbkta_globalstates.isDialogDone || this.cbkta_globalstates.isFightDone)
+            if (this.cbkta_globalstates.isDialogDone || this.cbkta_globalstates.isFightDone || this.forceNextScene)
             {
+                this.forceNextScene = false; //langsung ubah ke false
+
                 switch (this.listSceneData[this.sceneIndex])
                 {
                     case SceneData.Dialog:
@@ -190,6 +248,7 @@ public class SceneDirector : MonoBehaviour
                         this.ExitFightScene(); //meski sudah dilakukan secara internal, tetap pastikan
                         this.cbkta_globalstates.isFightDone = false;
                         break;
+                    //tidak perlu exit untuk SecondEnvironment, karena hanya mengubah environment saja
                     default:
                         break;
                 }
@@ -206,6 +265,14 @@ public class SceneDirector : MonoBehaviour
                         break;
                     case SceneData.Fight:
                         this.EnterFightScene();
+                        break;
+                    case SceneData.EnterSecondEnvironment:
+                        this.EnterSecondEnvironmentScene();
+                        this.forceNextScene = true; //langsung lanjut ke scene berikutnya
+                        break;
+                    case SceneData.ExitSecondEnvironment: //balik ke environment awal
+                        this.ExitSecondEnvironmentScene();
+                        this.forceNextScene = true; //langsung lanjut ke scene berikutnya
                         break;
                     default:
                         break;

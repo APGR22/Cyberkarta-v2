@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,6 +42,37 @@ public class cbkta_GlobalLogic : MonoBehaviour
     {
         this.cbkta_globalstates.sceneIndex++;
         SceneManager.LoadScene(this.cbkta_globalstates.sceneIndex);
+    }
+
+    //Events
+
+    /// <summary>
+    /// Execute function on next frame.
+    /// </summary>
+    /// <remarks>
+    /// If <paramref name="nextFrame"/> is 0, it means current frame.
+    /// </remarks>
+    /// <param name="func"></param>
+    /// <param name="nextFrame">0 means current frame</param>
+    public void ExecuteFuncOnNextFrame(Action func, int nextFrame = 1)
+    {
+        if (nextFrame < 0) nextFrame = 0;
+        if (func == null) return;
+
+        StartCoroutine(this.CoroutineExecuteFuncOnNextFrame(func, nextFrame));
+    }
+
+    IEnumerator CoroutineExecuteFuncOnNextFrame(Action func, int nextFrame)
+    {
+        int frameCount = 0;
+
+        while (frameCount < nextFrame)
+        {
+            frameCount++;
+            yield return null;
+        }
+
+        func();
     }
 
     void Awake()

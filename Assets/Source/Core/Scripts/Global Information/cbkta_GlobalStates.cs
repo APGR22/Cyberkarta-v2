@@ -11,6 +11,13 @@ public class cbkta_GlobalStates : MonoBehaviour
     public bool isInteractionTrigger = false;
 
     public int sceneIndex = 0;
+    /// <summary>
+    /// If true, then the scene will be paused
+    /// </summary>
+    /// <remarks>
+    /// This flag used by the <see cref="SceneDirector"/> to determine whether to pause the current scene.
+    /// </remarks>
+    public bool isSceneInterrupted = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

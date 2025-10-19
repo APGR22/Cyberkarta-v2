@@ -8,8 +8,10 @@
 !Assets
 !ProjectSettings
 !UserSettings
+!Packages
 
 #whitelist files in directory and subdirectory
 !Assets/**
 !ProjectSettings/**
 !UserSettings/**
+!Packages/**

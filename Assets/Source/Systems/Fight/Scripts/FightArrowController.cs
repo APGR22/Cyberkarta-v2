@@ -1,15 +1,13 @@
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(SceneDataTemplate))]
 public class FightArrowController : MonoBehaviour
 {
-    public int minArrowCounts = 3;
-    public int maxArrowCounts = 5;
-
     [HideInInspector] public FightDataType arrowType;
     [HideInInspector] public bool isAnimationEnded = false;
+
+    private Image image;
+    private SpriteRenderer spriteRenderer;
 
     private KeyCode keyCode;
 
@@ -52,7 +50,8 @@ public class FightArrowController : MonoBehaviour
     {
         /*setup dan init*/
 
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        this.image = GetComponent<Image>();
+        this.spriteRenderer = GetComponent<SpriteRenderer>();
 
         //arrow
         if (randomValue == -1)
@@ -71,21 +70,22 @@ public class FightArrowController : MonoBehaviour
             case FightDataType.arrowUp:
                 transform.Rotate(0, 0, 90);
 
-                spriteRenderer.color = Color.blue;
+                this.spriteRenderer.color = Color.blue;
                 break;
             case FightDataType.arrowDown:
                 transform.Rotate(0, 0, -90);
 
-                spriteRenderer.color = Color.red;
+                this.spriteRenderer.color = Color.red;
                 break;
             case FightDataType.arrowLeft:
-                spriteRenderer.flipX = true;
+                this.spriteRenderer.flipX = true;
+                this.image.rectTransform.localScale = new Vector3(-1, 1, 1);
 
-                spriteRenderer.color = Color.gray;
+                this.spriteRenderer.color = Color.gray;
                 break;
             case FightDataType.arrowRight:
 
-                spriteRenderer.color = Color.yellow;
+                this.spriteRenderer.color = Color.yellow;
                 break;
         }
 
@@ -117,7 +117,8 @@ public class FightArrowController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        this.image.sprite = this.spriteRenderer.sprite;
+        this.image.color = this.spriteRenderer.color;
     }
 
     public void AnimationEnded()

@@ -1,4 +1,5 @@
-using Unity.Services.Apis.Friends;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MainStats))]
@@ -6,9 +7,16 @@ public class StatsController : MonoBehaviour
 {
     private MainStats stats;
 
-    void Awake()
+    private List<Action> listOfFuncForAttack = new();
+
+    public void AddFuncOnAttack(Action func)
     {
-        this.stats = GetComponent<MainStats>();
+        listOfFuncForAttack.Add(func);
+    }
+
+    public void RemoveFuncOnAttack(Action func)
+    {
+        listOfFuncForAttack.Remove(func);
     }
 
     public void Attack(GameObject obj)
@@ -23,12 +31,22 @@ public class StatsController : MonoBehaviour
         obj_stats.healthPoint -= this.stats.damagePower;
         obj_stats.healthPoint = this.NormalizeStatsValue(obj_stats.healthPoint);
 
+        foreach (Action func in listOfFuncForAttack)
+        {
+            func();
+        }
+
         print($"{obj}: {obj_stats.healthPoint}");
     }
 
     private int NormalizeStatsValue(int value, int maxValue = 100)
     {
         return Mathf.Clamp(value, 0, maxValue);
+    }
+
+    void Awake()
+    {
+        this.stats = GetComponent<MainStats>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

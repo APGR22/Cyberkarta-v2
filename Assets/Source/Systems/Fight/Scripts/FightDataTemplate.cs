@@ -12,10 +12,15 @@ public enum FightDataType
     //D,
 }
 
+[RequireComponent(typeof(SceneDataTemplate))]
 public class FightDataTemplate : MonoBehaviour
 {
-    //public uint fightTimes = 0;
-    //[HideInInspector] public FightDataType[] combination;
+    public int minArrowCounts = 3;
+    public int maxArrowCounts = 5;
+
+    [Header("Determinator")]
+    public bool shakeCamera = false;
+    public bool shakePanel = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

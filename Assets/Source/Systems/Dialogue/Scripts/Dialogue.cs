@@ -104,6 +104,11 @@ public class Dialogue : MonoBehaviour
         }
     }
 
+    public void SendObjectDialogue(DialogueTemplate objDialogueTemplate)
+    {
+        this.dialogue = objDialogueTemplate;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -148,6 +153,7 @@ public class Dialogue : MonoBehaviour
         //this.NextDialog(false);
 
         this.cbkta_globalui.controls.UI.DialogNext.Disable();
+        this.dialogue = null;
     }
 }
 

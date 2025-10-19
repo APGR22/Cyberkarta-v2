@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,8 +17,8 @@ public class Fight : MonoBehaviour
     public Slider timer;
 
     [Header("Determinator")]
-    public bool shakeCamera = false;
-    public bool shakePanel = true;
+    private bool shakeCamera = false;
+    private bool shakePanel = true;
 
     private System.Random randomSystem;
 
@@ -36,6 +37,40 @@ public class Fight : MonoBehaviour
 
     private List<FightArrowController> fightArrowControllerObjects = new();
     private int fightArrowControllerObjectsIndex = 0;
+
+    //events
+    private List<Action> listOfFuncEventOnPlayerAttackEnemy = new();
+    private List<Action> listOfFuncEventOnEnemyAttackPlayer = new();
+
+    public void AddFuncEventOnPlayerAttackEnemy(Action func)
+    {
+        this.listOfFuncEventOnPlayerAttackEnemy.Add(func);
+    }
+
+    public void RemoveFuncEventOnPlayerAttackEnemy(Action func)
+    {
+        this.listOfFuncEventOnPlayerAttackEnemy.Remove(func);
+    }
+
+    public bool ContainsFuncEventOnPlayerAttackEnemy(Action func)
+    {
+        return this.listOfFuncEventOnPlayerAttackEnemy.Contains(func);
+    }
+
+    public void AddFuncEventOnEnemyAttackPlayer(Action func)
+    {
+        this.listOfFuncEventOnEnemyAttackPlayer.Add(func);
+    }
+
+    public void RemoveFuncEventOnEnemyAttackPlayer(Action func)
+    {
+        this.listOfFuncEventOnEnemyAttackPlayer.Remove(func);
+    }
+
+    public bool ContainsFuncEventOnEnemyAttackPlayer(Action func)
+    {
+        return this.listOfFuncEventOnEnemyAttackPlayer.Contains(func);
+    }
 
     int GetRandomValue()
     {
@@ -113,8 +148,6 @@ public class Fight : MonoBehaviour
 
     void ExitShaken(GameObject obj = null)
     {
-        this.panel.GetComponent<Image>().color = new Color(255, 255, 255);
-
         this.isShaken = false;
     }
 
@@ -153,6 +186,11 @@ public class Fight : MonoBehaviour
                 if (this.fightArrowControllerObjectsIndex == this.fightArrowControllerObjects.Count)
                 {
                     this.stopTimer = true;
+
+                    foreach (Action func in this.listOfFuncEventOnPlayerAttackEnemy)
+                    {
+                        func();
+                    }
                 }
             }
             else if (isKeyPressedWrongly)
@@ -165,7 +203,9 @@ public class Fight : MonoBehaviour
                 //getar
                 if (!this.isShaken)
                 {
-                    if (this.shakePanel) this.visualShake.ShakeGameObject(this.panel, 10, .3f,
+                    if (this.shakePanel)
+                    {
+                        this.visualShake.ShakeGameObject(this.panel, 10, .3f,
                         (GameObject obj) =>
                         {
                             this.panel.GetComponent<Image>().color = new Color(255, 0, 0);
@@ -175,9 +215,16 @@ public class Fight : MonoBehaviour
                             this.panel.GetComponent<Image>().color = new Color(255, 255, 255);
                             this.ExitShaken(obj);
                         }
-                    );
+                        );
+                    }
 
-                    if (this.shakeCamera) this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1, .3f, null, this.ExitShaken);
+                    if (this.shakeCamera)
+                    {
+                        this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1, .3f, null, (obj) =>
+                        {
+                            this.ExitShaken(obj);
+                        });
+                    }
 
                     this.OnShaken();
                 }
@@ -268,9 +315,12 @@ public class Fight : MonoBehaviour
         //setup
         this.fightTimes = this.randomSystem.Next(5, 8+1);
         this.fightTimeCount = 1;
-        FightArrowController obj = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<FightArrowController>();
+        FightDataTemplate obj = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<FightDataTemplate>();
 
         this.SpawnObjects(obj.minArrowCounts, obj.maxArrowCounts);
+
+        this.shakeCamera = obj.shakeCamera;
+        this.shakePanel = obj.shakePanel;
 
         this.run = true;
     }
