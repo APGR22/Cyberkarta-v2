@@ -6,8 +6,19 @@ using UnityEngine;
 public class StatsController : MonoBehaviour
 {
     private MainStats stats;
+    private int statsIndex = 0;
 
     private List<Action> listOfFuncForAttack = new();
+
+    public int GetStatsIndex()
+    {
+        return this.statsIndex;
+    }
+
+    public void IncrementStatsIndex()
+    {
+        this.statsIndex++;
+    }
 
     public void AddFuncOnAttack(Action func)
     {
@@ -22,21 +33,18 @@ public class StatsController : MonoBehaviour
     public void Attack(GameObject obj)
     {
         MainStats obj_stats = obj.GetComponent<MainStats>();
-        if (obj_stats == null)
-        {
-            Debug.LogError($"The object ({obj}) has no MainStats");
-            return;
-        }
+        StatsController obj_statscontroller = obj.GetComponent<StatsController>();
+        int obj_statsindex = obj_statscontroller.GetStatsIndex();
 
-        obj_stats.healthPoint -= this.stats.damagePower;
-        obj_stats.healthPoint = this.NormalizeStatsValue(obj_stats.healthPoint);
+        obj_stats.data[obj_statsindex].healthPoint -= this.stats.data[this.statsIndex].damagePower;
+        obj_stats.data[obj_statsindex].healthPoint = this.NormalizeStatsValue(obj_stats.data[obj_statsindex].healthPoint);
 
         foreach (Action func in listOfFuncForAttack)
         {
             func();
         }
 
-        print($"{obj}: {obj_stats.healthPoint}");
+        print($"{obj}: {obj_stats.data[obj_statsindex].healthPoint}");
     }
 
     private int NormalizeStatsValue(int value, int maxValue = 100)

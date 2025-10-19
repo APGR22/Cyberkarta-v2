@@ -21,6 +21,10 @@ public class SceneDirector : MonoBehaviour
     /// </summary>
     private int dialogueIndex = 0;
     /// <summary>
+    /// untuk fight
+    /// </summary>
+    private int fightIndex = 0;
+    /// <summary>
     /// untuk SecondEnvironment
     /// </summary>
     private int secondEnvironmentIndex = 0;
@@ -90,12 +94,20 @@ public class SceneDirector : MonoBehaviour
 
     void EnterFightScene()
     {
+        Fight fight = this.cbkta_globalui.fight.GetComponent<Fight>();
+        fight.fightIndex = this.fightIndex;
+
         this.cbkta_globalui.fight.SetActive(true);
     }
 
     void ExitFightScene()
     {
+        StatsController enemy = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<StatsController>();
+
         this.cbkta_globalui.fight.SetActive(false);
+
+        this.fightIndex++; //fight berikutnya jika masih ada fight lagi di daftar scene
+        enemy.IncrementStatsIndex();
     }
 
     void EnterSecondEnvironmentScene()
@@ -297,6 +309,7 @@ public class SceneDirector : MonoBehaviour
             //}
 
             this.dialogueIndex = 0;
+            this.fightIndex = 0;
 
             this.ExitScene();
 
@@ -320,7 +333,7 @@ public class SceneDirector : MonoBehaviour
         //        (
         //            this.cbkta_globalobjects.playerTriggeredWithObject.CompareTag("DialogTrigger")
         //            ||
-        //            this.cbkta_globalobjects.playerTriggeredWithObject.CompareTag("Enemy")
+        //            this.cbkta_globalobjects.playerTriggeredWithObject.CompareTag("NonPlayer")
         //        );
 
         //    if (isPlayerTriggedDialogue)

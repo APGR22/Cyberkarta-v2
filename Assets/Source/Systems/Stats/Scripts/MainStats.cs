@@ -4,23 +4,19 @@ public class MainStats : MonoBehaviour
 {
     public cbkta_GlobalLogicHelper cbkta_globallogichelper;
 
-    public int healthPoint = 5;
-    public int damagePower = 1;
-
-    public bool useRandom = false;
-    public int minHealthPoint = 0;
-    public int maxHealthPoint = 0;
-    public int minDamagePower = 0;
-    public int maxDamagePower = 0;
+    public MainStatsData[] data;
 
     void Awake()
     {
-        if (this.useRandom)
+        foreach (MainStatsData stats in data)
         {
-            System.Random randomSystem = this.cbkta_globallogichelper.GenerateRandomSystem();
+            if (stats.useRandom)
+            {
+                System.Random randomSystem = this.cbkta_globallogichelper.GenerateRandomSystem();
 
-            this.healthPoint = randomSystem.Next(this.minHealthPoint, this.maxHealthPoint+1);
-            this.damagePower = randomSystem.Next(this.minDamagePower, this.maxDamagePower+1);
+                stats.healthPoint = randomSystem.Next(stats.minHealthPoint, stats.maxHealthPoint + 1);
+                stats.damagePower = randomSystem.Next(stats.minDamagePower, stats.maxDamagePower + 1);
+            }
         }
     }
 

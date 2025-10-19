@@ -12,6 +12,8 @@ public class BrainDRealmMain : MonoBehaviour
 
     private List<Action> listFuncOnAttack = new();
 
+    private Vector2 previousFightPosition;
+
     void Init()
     {
         //setup
@@ -53,10 +55,25 @@ public class BrainDRealmMain : MonoBehaviour
             this.Init();
             this.hasInit = true;
         }
+
+        //setup
+        GameObject fight = this.cbkta_globalui.fight;
+        RectTransform fightRectTransform = fight.GetComponent<RectTransform>();
+
+        //cache
+        this.previousFightPosition = fightRectTransform.anchoredPosition;
+
+        //settings
+        fightRectTransform.anchoredPosition = new(0, -98.1f);
     }
 
     void OnDisable()
     {
+        //setup
+        GameObject fight = this.cbkta_globalui.fight;
+        RectTransform fightRectTransform = fight.GetComponent<RectTransform>();
 
+        //restore
+        fightRectTransform.anchoredPosition = this.previousFightPosition;
     }
 }

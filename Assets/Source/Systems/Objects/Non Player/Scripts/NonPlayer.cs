@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class NonPlayer : MonoBehaviour
 {
     public cbkta_GlobalStates cbkta_globalstates;
     public cbkta_GlobalObjects cbkta_globalobjects;

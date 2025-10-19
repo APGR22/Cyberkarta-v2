@@ -3,7 +3,7 @@ using UnityEngine;
 public class cbkta_GlobalTags : MonoBehaviour
 {
     public string player = "Player";
-    public string enemy = "Enemy";
+    public string enemy = "NonPlayer";
     public string npc = "NPC";
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

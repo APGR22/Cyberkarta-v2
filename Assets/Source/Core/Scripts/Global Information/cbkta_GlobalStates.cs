@@ -19,6 +19,8 @@ public class cbkta_GlobalStates : MonoBehaviour
     /// </remarks>
     public bool isSceneInterrupted = false;
 
+    public int playerStatsIndex = 0;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

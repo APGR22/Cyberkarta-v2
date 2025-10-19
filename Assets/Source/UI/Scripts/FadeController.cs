@@ -21,6 +21,9 @@ public class FadeController : MonoBehaviour
         if (this.isInFade) return;
         if (this.value == 1) return;
 
+        //Karena awalnya tidak terlihat, jadi diaktifkan dulu (dan harus karena StartCoroutine())
+        this.gameObject.SetActive(true);
+
         StartCoroutine(this.Fade(false, funcEnd));
         this.isInFade = true;
     }
@@ -31,7 +34,13 @@ public class FadeController : MonoBehaviour
         if (this.isInFade) return;
         if (this.value == 0) return;
 
-        StartCoroutine(this.Fade(true, funcEnd));
+        StartCoroutine(this.Fade(true, () =>
+        {
+            if (funcEnd != null) funcEnd();
+
+            //Karena tidak terlihat, jadi dinonaktifkan saja
+            this.gameObject.SetActive(false);
+        }));
         this.isInFade = true;
     }
 

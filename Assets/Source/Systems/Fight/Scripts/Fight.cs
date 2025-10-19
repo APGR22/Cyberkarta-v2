@@ -16,6 +16,11 @@ public class Fight : MonoBehaviour
     public GameObject parentForKeyCombination;
     public Slider timer;
 
+    /// <summary>
+    /// Shared and set by <see cref="SceneDirector"/>
+    /// </summary>
+    public int fightIndex = 0;
+
     [Header("Determinator")]
     private bool shakeCamera = false;
     private bool shakePanel = true;
@@ -37,6 +42,11 @@ public class Fight : MonoBehaviour
 
     private List<FightArrowController> fightArrowControllerObjects = new();
     private int fightArrowControllerObjectsIndex = 0;
+
+    /// <summary>
+    /// Defined on OnEnable(), destroyed on OnDisable()
+    /// </summary>
+    private FightData fightDataCache;
 
     //events
     private List<Action> listOfFuncEventOnPlayerAttackEnemy = new();
@@ -99,9 +109,12 @@ public class Fight : MonoBehaviour
         return randomValue;
     }
 
-    void SpawnObjects(int minObjectCounts = 3, int maxObjectCounts = 5)
+    void SpawnObjects()
     {
         //mempersiapkan data
+        int minObjectCounts = this.fightDataCache.minArrowCounts;
+        int maxObjectCounts = this.fightDataCache.maxArrowCounts;
+
         int objCount = this.randomSystem.Next(minObjectCounts, maxObjectCounts+1); //min - max-1
 
         //munculkan objek dengan jumlah yang sudah ditentukan secara random
@@ -142,8 +155,7 @@ public class Fight : MonoBehaviour
 
     void OnShaken(GameObject obj = null)
     {
-        //this.panel.GetComponent<Image>().color = new Color(255, 0, 0);
-        //this.isShaken = true;
+        this.isShaken = true;
     }
 
     void ExitShaken(GameObject obj = null)
@@ -172,6 +184,18 @@ public class Fight : MonoBehaviour
             this.timer.value -= Time.deltaTime;
         }
 
+        //setup
+
+        MainStats enemy_stats = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<MainStats>();
+        StatsController enemy_statscontroller = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<StatsController>();
+        MainStatsData enemy_statsdata = enemy_stats.data[enemy_statscontroller.GetStatsIndex()];
+
+        MainStats player_stats = this.cbkta_globalobjects.player.GetComponent<MainStats>();
+        StatsController player_statscontroller = this.cbkta_globalobjects.player.GetComponent<StatsController>();
+        MainStatsData player_statsdata = player_stats.data[player_statscontroller.GetStatsIndex()];
+
+        //mulai
+
         if (this.fightArrowControllerObjectsIndex < this.fightArrowControllerObjects.Count && this.timer.value > 0)
         {
             bool isKeyPressedCorrectly = this.fightArrowControllerObjects[this.fightArrowControllerObjectsIndex].IsKeyPressedCorrectly();
@@ -196,14 +220,12 @@ public class Fight : MonoBehaviour
             else if (isKeyPressedWrongly)
             {
                 //player gagal menyerang dan berakhir diserang musuh
-
-                StatsController enemy_statscontroller = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<StatsController>();
                 enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
 
                 //getar
                 if (!this.isShaken)
                 {
-                    if (this.shakePanel)
+                    if (this.fightDataCache.shakePanel)
                     {
                         this.visualShake.ShakeGameObject(this.panel, 10, .3f,
                         (GameObject obj) =>
@@ -218,7 +240,7 @@ public class Fight : MonoBehaviour
                         );
                     }
 
-                    if (this.shakeCamera)
+                    if (this.fightDataCache.shakeCamera)
                     {
                         this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1, .3f, null, (obj) =>
                         {
@@ -240,9 +262,6 @@ public class Fight : MonoBehaviour
             //sesi dan animasi fight sudah selesai
             if (this.fightArrowControllerObjects.Last().isAnimationEnded)
             {
-                MainStats enemy_stats = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<MainStats>();
-                StatsController player_statscontroller = this.cbkta_globalobjects.player.GetComponent<StatsController>();
-
                 //player berhasil menyerang musuh
                 player_statscontroller.Attack(this.cbkta_globalobjects.playerTriggeredWithObject);
 
@@ -250,7 +269,7 @@ public class Fight : MonoBehaviour
                 this.timer.value = this.timer.maxValue;
 
                 //jika nyawa musuh habis
-                if (enemy_stats.healthPoint == 0)
+                if (enemy_statsdata.healthPoint == 0)
                 {
                     //buat untuk exit dari fight
 
@@ -269,10 +288,9 @@ public class Fight : MonoBehaviour
 
         //hasil
 
-        MainStats player_stats = this.cbkta_globalobjects.player.GetComponent<MainStats>();
 
         //jika health player sudah habis duluan
-        if (player_stats.healthPoint == 0)
+        if (player_statsdata.healthPoint == 0)
         {
             //nonaktifkan Fight
             gameObject.SetActive(false);
@@ -281,14 +299,12 @@ public class Fight : MonoBehaviour
         if (this.timer.value == 0)
         {
             //player gagal menyerang dan berakhir diserang musuh
-
-            StatsController enemy_statscontroller = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<StatsController>();
             enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
 
             //getar
             if (!this.isShaken)
             {
-                if (this.shakePanel) this.visualShake.ShakeGameObject(this.panel, 10, .3f,
+                if (this.fightDataCache.shakePanel) this.visualShake.ShakeGameObject(this.panel, 10, .3f,
                     (GameObject obj) =>
                     {
                         this.panel.GetComponent<Image>().color = new Color(255, 0, 0);
@@ -300,7 +316,7 @@ public class Fight : MonoBehaviour
                     }
                 );
 
-                if (this.shakeCamera) this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1, .3f, null, this.ExitShaken);
+                if (this.fightDataCache.shakeCamera) this.visualShake.ShakeGameObject(this.cbkta_globalui.cam, 1, .3f, null, this.ExitShaken);
 
                 this.OnShaken();
             }
@@ -316,11 +332,9 @@ public class Fight : MonoBehaviour
         this.fightTimes = this.randomSystem.Next(5, 8+1);
         this.fightTimeCount = 1;
         FightDataTemplate obj = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<FightDataTemplate>();
+        this.fightDataCache = obj.data[this.fightIndex];
 
-        this.SpawnObjects(obj.minArrowCounts, obj.maxArrowCounts);
-
-        this.shakeCamera = obj.shakeCamera;
-        this.shakePanel = obj.shakePanel;
+        this.SpawnObjects();
 
         this.run = true;
     }
@@ -330,5 +344,6 @@ public class Fight : MonoBehaviour
         this.DestroyObjects();
         this.run = false;
         this.cbkta_globalstates.isFightDone = true;
+        this.stopTimer = false;
     }
 }
