@@ -70,7 +70,7 @@ public class BrainDRealmMain : MonoBehaviour
         this.previousBGM = soundManagerLogic.BGMAudioSource.clip;
 
         //settings
-        fightRectTransform.anchoredPosition = new(0, -98.1f);
+        fightRectTransform.anchoredPosition = new(0, -117);
 
         soundBGMMain.Play(soundBGMMain.brainDRealmBGM);
     }

@@ -1,3 +1,4 @@
+using cbkta.UI.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +9,12 @@ public class cbkta_GlobalLogic : MonoBehaviour
 {
     public cbkta_GlobalUI cbkta_globalui;
     public cbkta_GlobalStates cbkta_globalstates;
+    public cbkta_GlobalObjects cbkta_globalobjects;
 
     private bool UIControlsEnabled = true;
+
+    //cache
+    private Vector3 playerPositionStayedOn = Vector3.zero;
 
     //also used for "Continue" button
     public void TogglePauseMenu()
@@ -51,6 +56,31 @@ public class cbkta_GlobalLogic : MonoBehaviour
         if (this.cbkta_globalstates.sceneIndex < 0) this.cbkta_globalstates.sceneIndex = 0;
 
         SceneManager.LoadScene(this.cbkta_globalstates.sceneIndex);
+    }
+
+    public void FreezePlayer()
+    {
+        //if (this.playerPositionStayedOn == Vector3.zero)
+        //{
+        //    this.playerPositionStayedOn = this.cbkta_globalobjects.player.transform.position;
+        //}
+
+        //this.cbkta_globalobjects.player.transform.position = this.playerPositionStayedOn;
+
+        //setup
+        UIControls controls = this.cbkta_globalui.controls;
+
+        //settings
+        controls.Player.Disable();
+    }
+
+    public void UnfreezePlayer()
+    {
+        //setup
+        UIControls controls = this.cbkta_globalui.controls;
+
+        //settings
+        controls.Player.Enable();
     }
 
     //Events
@@ -115,7 +145,7 @@ public class cbkta_GlobalLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //if (this.playerPositionStayedOn != Vector3.zero) this.FreezePlayer();
     }
     void OnEnable()
     {

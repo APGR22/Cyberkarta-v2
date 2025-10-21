@@ -6,6 +6,7 @@ public class SceneDirector : MonoBehaviour
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalStates cbkta_globalstates;
     public cbkta_GlobalTags cbkta_globaltags;
+    public cbkta_GlobalLogic cbkta_globallogic;
 
     private bool run = false;
     private bool exit = false;
@@ -31,21 +32,6 @@ public class SceneDirector : MonoBehaviour
 
     private bool forceNextScene = false;
 
-    void FreezePlayer()
-    {
-        if (this.playerPositionStayedOn == Vector3.zero)
-        {
-            this.playerPositionStayedOn = this.cbkta_globalobjects.player.transform.position;
-        }
-
-        this.cbkta_globalobjects.player.transform.position = this.playerPositionStayedOn;
-    }
-
-    void UnfreezePLayer()
-    {
-        this.playerPositionStayedOn = Vector3.zero;
-    }
-
     void EnterScene()
     {
         this.cbkta_globalui.cinemachineCamera.enabled = false;
@@ -60,9 +46,7 @@ public class SceneDirector : MonoBehaviour
 
         this.cbkta_globalui.cam.transform.position = camNewPosition;
 
-        this.cbkta_globalui.controls.Player.Disable();
-
-        this.FreezePlayer();
+        this.cbkta_globallogic.FreezePlayer();
     }
 
     void ExitScene()
@@ -71,7 +55,7 @@ public class SceneDirector : MonoBehaviour
 
         this.cbkta_globalui.controls.Player.Enable();
 
-        this.UnfreezePLayer();
+        this.cbkta_globallogic.UnfreezePlayer();
     }
 
     void EnterDialogueScene()
@@ -182,18 +166,18 @@ public class SceneDirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.playerPositionStayedOn != Vector3.zero) this.FreezePlayer();
+        //setup
 
-        //---
+        GameObject player = this.cbkta_globalobjects.player;
+        GameObject obj = this.cbkta_globalobjects.playerTriggeredWithObject;
 
         //deteksi jika men-trigger sesuatu sesuai scene tags
         bool isSomethingTriggered = false;
-        if (this.cbkta_globalobjects.playerTriggeredWithObject != null)
+        if (obj != null)
         {
-            GameObject obj = this.cbkta_globalobjects.playerTriggeredWithObject; //sebagai singkatan sementara
             SceneDataTemplate objSceneDataTemplate = obj.GetComponent<SceneDataTemplate>();
 
-            isSomethingTriggered = this.CompareWithSceneTags(obj) && !objSceneDataTemplate.hasScene;
+            if (objSceneDataTemplate != null) isSomethingTriggered = this.CompareWithSceneTags(obj) && !objSceneDataTemplate.hasScene;
         }
 
         //jika sesuatu sudah selesai dan sudah keluar dari trigger
@@ -213,13 +197,13 @@ public class SceneDirector : MonoBehaviour
         //pertama kali
         if (!run && isSomethingTriggered && !exit)
         {
-            this.listSceneData = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<SceneDataTemplate>().scenes;
+            this.listSceneData = obj.GetComponent<SceneDataTemplate>().scenes;
             this.sceneIndex = 0;
 
             switch (this.listSceneData[this.sceneIndex])
             {
                 case SceneData.Dialog:
-                    //jika dialog dan belum interaksi, skip ke berikut saja
+                    //jika dialog dan belum interaksi, skip hingga ada interaksi.
                     if (!this.cbkta_globalstates.isInteractionTrigger) return;
 
                     this.EnterDialogueScene();
@@ -310,9 +294,6 @@ public class SceneDirector : MonoBehaviour
 
             //setup
 
-            GameObject player = this.cbkta_globalobjects.player;
-            GameObject obj = this.cbkta_globalobjects.playerTriggeredWithObject;
-
             SceneDataTemplate objSceneDataTemplate = obj.GetComponent<SceneDataTemplate>();
 
             StatsController playerStatsController = player.GetComponent<StatsController>();
@@ -347,21 +328,21 @@ public class SceneDirector : MonoBehaviour
 
         ///*Deteksi trigger*/
 
-        //bool isSomethingTriggered = this.cbkta_globalobjects.playerTriggeredWithObject != null;
+        //bool isSomethingTriggered = obj != null;
 
         //bool isPlayerTriggedDialogue = false;
         //if (isSomethingTriggered)
         //{
         //    isPlayerTriggedDialogue =
         //        (
-        //            this.cbkta_globalobjects.playerTriggeredWithObject.CompareTag("DialogTrigger")
+        //            obj.CompareTag("DialogTrigger")
         //            ||
-        //            this.cbkta_globalobjects.playerTriggeredWithObject.CompareTag("NonPlayer")
+        //            obj.CompareTag("NonPlayer")
         //        );
 
         //    if (isPlayerTriggedDialogue)
         //    {
-        //        this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<SceneDataTemplate>();
+        //        obj.GetComponent<SceneDataTemplate>();
         //    }
         //}
 

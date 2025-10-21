@@ -34,9 +34,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 889620817215594686}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9.19, y: -1.56, z: 0}
-  m_LocalScale: {x: 0.07485887, y: 0.07485887, z: 0.07485887}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3887410849141864809}
@@ -94,7 +94,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 64, y: 64}
+  m_Size: {x: 112, y: 112}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneDataTemplate
   scenes: 000000000200000000000000010000000300000000000000
   hasScene: 0
+  eventNameForLevelDirectorMain: NPCInteractionCompleted
 --- !u!114 &4132845386783605741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,53 +166,92 @@ MonoBehaviour:
   data:
   - data:
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
-      text: 'huwagh huwh huhh huwghh huhhh.. '
+      text: 'Huwagh huwh huhh huwghh huhhh.. '
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
-      text: '*terengah engah'
+      text: '*Terengah engah'
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: Apa yang terjadi?!
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
-      text: to-tolong saya..
+      text: To-tolong saya..
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
-      text: anda kenapa? apa yang bisa saya bantu?
+      text: Anda kenapa? apa yang bisa saya bantu?
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
       text: Ambil.... Ini....
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 455820940add1f943be620281d88aa76, type: 3}
       text: (Item baru didapatkan)
+      nonPlayerType: 0
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: Apa ini?
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
       text: Tolong.... tekan... itu....
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: Yang mana?!
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
-      text: 'huwagh huwh huhh huwghh huhhh.. '
+      text: 'Huwagh huwh huhh huwghh huhhh.. '
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: ...
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: Mungkin yang ini.
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 455820940add1f943be620281d88aa76, type: 3}
       text: '*Klik'
+      nonPlayerType: 0
   - data:
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: Tempat apa ini?!
+      nonPlayerType: 1
+    - icon: {fileID: 21300000, guid: 92ca24df3c293494d9e115cfb5406fd6, type: 3}
+      text: '[Anomali terdeteksi]'
+      nonPlayerType: 2
+    - icon: {fileID: 21300000, guid: 92ca24df3c293494d9e115cfb5406fd6, type: 3}
+      text: '[Mode pemusnahan dimulai]'
+      nonPlayerType: 2
+    - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
+      text: Apa?!
+      nonPlayerType: 1
+    - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
+      text: Apa yang harus kulakukan?!
+      nonPlayerType: 1
+    - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
+      text: Kurasa aku harus hancurkan benda ini.
+      nonPlayerType: 1
   - data:
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
       text: Terima kasih....
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
       text: 'Huwagh huwh huhh huwghh huhhh.. '
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: ec4f2c06828b32b41b2074d30720dc45, type: 3}
       text: '*Pingsan'
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: ...
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
-      text: Dia dari Cyberkarta kan?
+      text: Tunggu, dia dari Cyberkarta?
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: ...
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: Gerbangnya masih terbuka.
+      nonPlayerType: 1
     - icon: {fileID: 21300000, guid: 29116415b1d9fa74aaba394de6b4cdf3, type: 3}
       text: Kurasa ini kesempatanku untuk masuk ke Cyberkarta.
+      nonPlayerType: 1
+  eventNameForLevelDirectorMain: 
 --- !u!61 &7083409176102665227
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -246,17 +286,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -7.8}
+  m_Offset: {x: -28.5, y: -7.8}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2, y: 2}
-    newSize: {x: 64, y: 64}
+    newSize: {x: 112, y: 112}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 106.14, y: 53.61}
+  m_Size: {x: 69, y: 53.61}
   m_EdgeRadius: 0
 --- !u!114 &6045447474325178824
 MonoBehaviour:
@@ -328,6 +368,7 @@ MonoBehaviour:
     maxArrowCounts: 3
     shakeCamera: 1
     shakePanel: 1
+  eventNameForLevelDirectorMain: 
 --- !u!1 &3619752686208639956
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,8 +396,8 @@ Transform:
   m_GameObject: {fileID: 3619752686208639956}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.6, y: 27.1, z: 0}
-  m_LocalScale: {x: 42.74711, y: 42.74711, z: 42.74711}
+  m_LocalPosition: {x: 0, y: 47.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 204415632008754473}
@@ -407,13 +448,13 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 51
   m_Sprite: {fileID: 21300000, guid: 34870289a91bf3c46a43f915ca8a8eb2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.5, y: 0.5}
+  m_DrawMode: 1
+  m_Size: {x: 32, y: 32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

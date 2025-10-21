@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(Collider2D))]
 public class LevelEntryPortal : MonoBehaviour
 {
     public cbkta_GlobalLogic cbkta_globallogic;
@@ -21,7 +22,12 @@ public class LevelEntryPortal : MonoBehaviour
 
     void EnterAnotherScene()
     {
+        //setup
         Action funcEnd = null;
+
+        //settings
+
+        this.cbkta_globallogic.FreezePlayer();
 
         if (this.sceneIndex >= 0)
         {
@@ -72,7 +78,7 @@ public class LevelEntryPortal : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(this.cbkta_globaltags.player))
         {

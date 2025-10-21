@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalUI cbkta_globalui;
 
+    public float moveSpeed = 2.3f;
+
     //informasi player
     private Rigidbody2D rb2D;
     private Animator anim;
@@ -15,7 +17,6 @@ public class Player : MonoBehaviour
     private Vector2 move;
     private bool isMoved = false;
     private float currentMoveSpeed = 0;
-    private float moveSpeed = 3; //10 untuk lari
     private float moveAcceleration = 13;
     private float moveDeceleration = 13;
 
@@ -117,16 +118,20 @@ public class Player : MonoBehaviour
             this.isJumped = true;
         };
 
-        Move();
-        Jump();
+        this.Move();
+        this.Jump();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Jump();
-        Animation();
+        this.Move();
+        this.Jump();
+    }
+
+    void LateUpdate()
+    {
+        this.Animation();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
