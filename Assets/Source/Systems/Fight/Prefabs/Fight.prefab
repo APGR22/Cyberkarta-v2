@@ -128,10 +128,12 @@ MonoBehaviour:
   cbkta_globalobjects: {fileID: 0}
   cbkta_globalstates: {fileID: 0}
   cbkta_globallogichelper: {fileID: 0}
+  visualShake: {fileID: 0}
   panel: {fileID: 8220805125350511071}
   prefabKeyCombination: {fileID: 7767521761534571370, guid: 2ad36635255445f429e3acfc7e20bdb2, type: 3}
   parentForKeyCombination: {fileID: 1116897348095118347}
   timer: {fileID: 6503516170010773040}
+  fightIndex: 0
 --- !u!1 &1116897348095118347
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,10 +200,10 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 1
-  m_ChildScaleHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
 --- !u!1 &3516737892301375360
 GameObject:

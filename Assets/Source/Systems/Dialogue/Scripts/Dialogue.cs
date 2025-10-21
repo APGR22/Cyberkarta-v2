@@ -1,3 +1,4 @@
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +27,24 @@ public class Dialogue : MonoBehaviour
     private float textAnimationTime = 0;
     private int totalChars = 0;
     private bool isDialogEnded = true;
+
+    public void SFXPlayDialogueVoice(NonPlayerType nonPlayerType)
+    {
+        SoundManagerLogic soundManagerLogic = this.cbkta_globalui.soundManagerLogic;
+        SoundSFXMain soundSFXMain = soundManagerLogic.soundSFXMain;
+
+        switch (nonPlayerType)
+        {
+            case NonPlayerType.Human:
+                soundSFXMain.PlayRandomOnRange(soundSFXMain.humanDialogueVoice);
+                break;
+            case NonPlayerType.Robot:
+                soundSFXMain.PlayRandomOnRange(soundSFXMain.robotDialogueVoice);
+                break;
+            default: //None
+                break;
+        }
+    }
 
     void Init()
     {
@@ -65,7 +84,7 @@ public class Dialogue : MonoBehaviour
         //increment
         this.visibleText++;
 
-        //pastikan dan paksa hanya di dalam range panjang data asli
+        //pastikan dan paksa hanya di dalam range panjang events asli
         this.visibleText = Mathf.Clamp(this.visibleText, 0, this.totalChars);
 
         //update
@@ -86,13 +105,15 @@ public class Dialogue : MonoBehaviour
             this.visibleText = this.totalChars;
             return;
         }
-        this.visibleText = 0; //reset karena ini data berikutnya
+        this.visibleText = 0; //reset karena ini events berikutnya
 
         bool isEnded = false;
         DialogueData data = this.dialogue.GetText(this.dialogueIndex, this.nextText, out isEnded);
 
         this.TypeText(data.text);
         this.icon.sprite = data.icon;
+        //putar SFX
+        this.SFXPlayDialogueVoice(data.nonPlayerType);
 
         this.nextText++;
 
@@ -149,6 +170,13 @@ public class Dialogue : MonoBehaviour
 
     void OnDisable()
     {
+        //kirim sinyal event
+        this.cbkta_globalui.levelDirectorMain.SendEvent(
+            this.dialogue.eventNameForLevelDirectorMain,
+            this.GetType(),
+            MethodBase.GetCurrentMethod().Name
+        );
+
         //this.ResetDialog();
         //this.NextDialog(false);
 
@@ -203,9 +231,9 @@ public class Dialogue : MonoBehaviour
 //        this.visibleText = 0; //reset karena dialog selanjutnya
 
 //        bool isEnded = false; //cek apakah index sudah berada di akhir
-//        string data = this.dialogue.GetText(nextText, out isEnded);
+//        string events = this.dialogue.GetText(nextText, out isEnded);
 
-//        this.tmpui.data = data;
+//        this.tmpui.events = events;
 //        this.tmpui.ForceMeshUpdate(); // Perlu kah?
 
 //        this.nextText++;
@@ -231,7 +259,7 @@ public class Dialogue : MonoBehaviour
 //        //increment
 //        this.visibleText++;
 
-//        //pastikan dan paksa hanya di dalam range panjang data asli
+//        //pastikan dan paksa hanya di dalam range panjang events asli
 //        this.visibleText = Mathf.Clamp(this.visibleText, 0, this.totalChars);
 
 //        //update

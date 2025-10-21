@@ -26,6 +26,18 @@ public class Player : MonoBehaviour
     private float jumpTimer = 0;
     private bool isGrounded = false;
 
+    /// <summary>
+    /// Dipakai oleh Animation Event pada Animator untuk memicu suara langkah kaki.
+    /// </summary>
+    public void SFXPlayPlayerMovement()
+    {
+        SoundSFXMain soundSFXMain = this.cbkta_globalui.soundManagerLogic.soundSFXMain;
+
+        soundSFXMain.PlayRandomOnRange(
+            soundSFXMain.footsteps
+        );
+    }
+
     void Move()
     {
         // Tentukan target kecepatan
@@ -51,6 +63,8 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
+        return; //nonaktifkan lompatan untuk sementara
+
         if (!this.isJumped) return; //jika tidak ada mau lompat
         //jika belum menyentuh tanah
         if (!this.isGrounded) return;
@@ -70,7 +84,7 @@ public class Player : MonoBehaviour
     void Animation()
     {
         this.anim.SetFloat("xVelocity", this.currentMoveSpeed < 0 ? -this.currentMoveSpeed : this.currentMoveSpeed);
-        this.anim.SetBool("isJumping", this.isJumped);
+        this.anim.SetBool("isJumping", this.isJumped && false); //nonaktifkan lompatan untuk sementara
     }
 
     void Awake()
@@ -118,14 +132,17 @@ public class Player : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         //tabrakan dengan tanah
-        this.isGrounded = collision.gameObject.CompareTag("Ground");
-        this.isJumped = !(this.isGrounded);
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            this.isGrounded = true;
+            this.isJumped = false;
+        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
         //melepas tabrakan dengan tanah
-        this.isGrounded = !collision.gameObject.CompareTag("Ground");
+        if (collision.gameObject.CompareTag("Ground")) this.isGrounded = false;
     }
 
     void OnTriggerEnter2D(Collider2D collision)

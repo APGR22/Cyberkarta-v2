@@ -13,6 +13,7 @@ public class BrainDRealmMain : MonoBehaviour
     private List<Action> listFuncOnAttack = new();
 
     private Vector2 previousFightPosition;
+    private AudioClip previousBGM;
 
     void Init()
     {
@@ -60,11 +61,18 @@ public class BrainDRealmMain : MonoBehaviour
         GameObject fight = this.cbkta_globalui.fight;
         RectTransform fightRectTransform = fight.GetComponent<RectTransform>();
 
+        SoundManagerLogic soundManagerLogic = this.cbkta_globalui.soundManagerLogic;
+        SoundBGMMain soundBGMMain = soundManagerLogic.soundBGMMain;
+
         //cache
         this.previousFightPosition = fightRectTransform.anchoredPosition;
 
+        this.previousBGM = soundManagerLogic.BGMAudioSource.clip;
+
         //settings
         fightRectTransform.anchoredPosition = new(0, -98.1f);
+
+        soundBGMMain.Play(soundBGMMain.brainDRealmBGM);
     }
 
     void OnDisable()
@@ -73,7 +81,12 @@ public class BrainDRealmMain : MonoBehaviour
         GameObject fight = this.cbkta_globalui.fight;
         RectTransform fightRectTransform = fight.GetComponent<RectTransform>();
 
+        SoundManagerLogic soundManagerLogic = this.cbkta_globalui.soundManagerLogic;
+        SoundBGMMain soundBGMMain = soundManagerLogic.soundBGMMain;
+
         //restore
         fightRectTransform.anchoredPosition = this.previousFightPosition;
+
+        soundBGMMain.Play(this.previousBGM);
     }
 }

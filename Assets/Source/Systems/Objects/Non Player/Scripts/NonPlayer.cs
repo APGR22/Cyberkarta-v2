@@ -1,5 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// Used by <see cref="Dialogue"/>
+/// </summary>
+public enum NonPlayerType
+{
+    None,
+    Human,
+    Robot
+}
+
 public class NonPlayer : MonoBehaviour
 {
     public cbkta_GlobalStates cbkta_globalstates;

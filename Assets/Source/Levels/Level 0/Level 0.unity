@@ -132,6 +132,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1631848997}
     - target: {fileID: 1064398517129908140, guid: f6e05468b388a774cafb6f0daa857d03, type: 3}
+      propertyPath: cbkta_globaltags
+      value: 
+      objectReference: {fileID: 430603130}
+    - target: {fileID: 1064398517129908140, guid: f6e05468b388a774cafb6f0daa857d03, type: 3}
       propertyPath: cbkta_globalstates
       value: 
       objectReference: {fileID: 1631848995}
@@ -201,6 +205,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3966595564028054787, guid: eb770c84704a7f84c8da12ea6ca5aa0e, type: 3}
   m_PrefabInstance: {fileID: 3096682601224096840}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &430603130 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4895897567966431241, guid: 892c199441af9c440bf283eeeaa31437, type: 3}
+  m_PrefabInstance: {fileID: 1631848994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f4f9c811725c89489ee266140e0d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::cbkta_GlobalTags
 --- !u!1 &445566599
 GameObject:
   m_ObjectHideFlags: 0

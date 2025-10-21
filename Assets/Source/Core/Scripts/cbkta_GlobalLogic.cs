@@ -41,6 +41,15 @@ public class cbkta_GlobalLogic : MonoBehaviour
     public void NextScene()
     {
         this.cbkta_globalstates.sceneIndex++;
+
+        SceneManager.LoadScene(this.cbkta_globalstates.sceneIndex);
+    }
+
+    public void PreviousScene()
+    {
+        this.cbkta_globalstates.sceneIndex--;
+        if (this.cbkta_globalstates.sceneIndex < 0) this.cbkta_globalstates.sceneIndex = 0;
+
         SceneManager.LoadScene(this.cbkta_globalstates.sceneIndex);
     }
 
@@ -100,7 +109,7 @@ public class cbkta_GlobalLogic : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        this.cbkta_globalui.fadeController.gameObject.SetActive(false);
+        this.cbkta_globalstates.sceneIndex = SceneManager.GetActiveScene().buildIndex;
     }
 
     // Update is called once per frame

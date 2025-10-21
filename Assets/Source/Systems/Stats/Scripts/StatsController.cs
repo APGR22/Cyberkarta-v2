@@ -20,6 +20,11 @@ public class StatsController : MonoBehaviour
         this.statsIndex++;
     }
 
+    public MainStatsData GetMainStats()
+    {
+        return this.stats.data[this.statsIndex];
+    }
+
     public void AddFuncOnAttack(Action func)
     {
         listOfFuncForAttack.Add(func);

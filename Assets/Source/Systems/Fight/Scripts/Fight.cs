@@ -111,7 +111,7 @@ public class Fight : MonoBehaviour
 
     void SpawnObjects()
     {
-        //mempersiapkan data
+        //mempersiapkan events
         int minObjectCounts = this.fightDataCache.minArrowCounts;
         int maxObjectCounts = this.fightDataCache.maxArrowCounts;
 
@@ -186,13 +186,11 @@ public class Fight : MonoBehaviour
 
         //setup
 
-        MainStats enemy_stats = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<MainStats>();
         StatsController enemy_statscontroller = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<StatsController>();
-        MainStatsData enemy_statsdata = enemy_stats.data[enemy_statscontroller.GetStatsIndex()];
+        MainStatsData enemy_statsdata = enemy_statscontroller.GetMainStats();
 
-        MainStats player_stats = this.cbkta_globalobjects.player.GetComponent<MainStats>();
         StatsController player_statscontroller = this.cbkta_globalobjects.player.GetComponent<StatsController>();
-        MainStatsData player_statsdata = player_stats.data[player_statscontroller.GetStatsIndex()];
+        MainStatsData player_statsdata = player_statscontroller.GetMainStats();
 
         //mulai
 
@@ -341,9 +339,32 @@ public class Fight : MonoBehaviour
 
     void OnDisable()
     {
+        //setup
+
+        GameObject player = this.cbkta_globalobjects.player;
+        GameObject obj = this.cbkta_globalobjects.playerTriggeredWithObject;
+
+        StatsController playerStatsController = player.GetComponent<StatsController>();
+        StatsController objStatsController = obj.GetComponent<StatsController>();
+
+        FightDataTemplate objFightDataTemplate = obj.GetComponent<FightDataTemplate>();
+
+        //kirim sinyal event
+        this.cbkta_globalui.levelDirectorMain.SendEvent(
+            objFightDataTemplate.eventNameForLevelDirectorMain,
+            this.GetType(),
+            System.Reflection.MethodBase.GetCurrentMethod().Name,
+            playerStatsController,
+            objStatsController
+        );
+
+        //setting
+
         this.DestroyObjects();
+
         this.run = false;
         this.cbkta_globalstates.isFightDone = true;
         this.stopTimer = false;
+        this.fightDataCache = null; //destroy
     }
 }

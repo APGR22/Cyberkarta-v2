@@ -13,6 +13,9 @@ public class cbkta_GlobalUI : MonoBehaviour
     public GameObject canvas;
     public GameObject secondEnvironments = null;
     public FadeController fadeController = null;
+    public SoundManagerLogic soundManagerLogic = null;
+    public LevelEntryPortal nextLevelEntryPortal = null;
+    public LevelDirectorMain levelDirectorMain = null;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

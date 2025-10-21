@@ -5,8 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(SceneDataTemplate))]
 public class DialogueTemplate : MonoBehaviour
 {
-    //data field filled on Unity Inspector
+    //events field filled on Unity Inspector
     public DialogueData2D[] data;
+
+    [Tooltip("(Opsional) Mengirim sinyal event ke pusat ketika dialog selesai")]
+    public string eventNameForLevelDirectorMain = "";
 
     /// <summary>
     /// 

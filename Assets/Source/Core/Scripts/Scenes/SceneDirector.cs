@@ -308,17 +308,40 @@ public class SceneDirector : MonoBehaviour
             //        break;
             //}
 
+            //setup
+
+            GameObject player = this.cbkta_globalobjects.player;
+            GameObject obj = this.cbkta_globalobjects.playerTriggeredWithObject;
+
+            SceneDataTemplate objSceneDataTemplate = obj.GetComponent<SceneDataTemplate>();
+
+            StatsController playerStatsController = player.GetComponent<StatsController>();
+            StatsController objStatsController = obj.GetComponent<StatsController>();
+
+            //settings
+
             this.dialogueIndex = 0;
             this.fightIndex = 0;
-
-            this.ExitScene();
 
             this.listSceneData = null;
             this.sceneIndex = 0;
 
             this.run = false;
 
-            this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<SceneDataTemplate>().hasScene = true;
+            objSceneDataTemplate.hasScene = true;
+
+            //kirim sinyal event
+            this.cbkta_globalui.levelDirectorMain.SendEvent(
+                objSceneDataTemplate.eventNameForLevelDirectorMain,
+                this.GetType(),
+                System.Reflection.MethodBase.GetCurrentMethod().Name,
+                playerStatsController,
+                objStatsController
+            );
+
+            //keluar
+
+            this.ExitScene();
             return;
         }
 

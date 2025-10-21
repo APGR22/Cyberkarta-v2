@@ -231,13 +231,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainStats
   cbkta_globallogichelper: {fileID: 0}
-  healthPoint: 5
-  damagePower: 1
-  useRandom: 0
-  minHealthPoint: 0
-  maxHealthPoint: 0
-  minDamagePower: 0
-  maxDamagePower: 0
+  data:
+  - healthPoint: 10
+    damagePower: 1
+    useRandom: 0
+    minHealthPoint: 0
+    maxHealthPoint: 0
+    minDamagePower: 0
+    maxDamagePower: 0
 --- !u!114 &1798454259689788397
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,6 +5,9 @@ public class FightDataTemplate : MonoBehaviour
 {
     public FightData[] data;
 
+    [Tooltip("(Opsional) Mengirim sinyal event ke pusat ketika dialog selesai")]
+    public string eventNameForLevelDirectorMain = "";
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
