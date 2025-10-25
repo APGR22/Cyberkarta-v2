@@ -14,6 +14,7 @@ public class SecondEnvironmentsController : MonoBehaviour
     public cbkta_GlobalLogicHelper cbkta_globallogichelper;
     public GameObject brainDRealmEnvironment;
     public GameObject lastFightEnvironment;
+    public GameObject malManEnvironment;
 
     /// <summary>
     /// shared with <see cref="SceneDirector" />
@@ -87,6 +88,9 @@ public class SecondEnvironmentsController : MonoBehaviour
             case SecondEnvironmentsData.LastFight:
                 this.lastFightEnvironment.SetActive(true);
                 break;
+            case SecondEnvironmentsData.MalMan:
+                this.malManEnvironment.SetActive(true);
+                break;
         }
     }
 
@@ -106,5 +110,6 @@ public class SecondEnvironmentsController : MonoBehaviour
         //nonaktifkan semua environment
         this.brainDRealmEnvironment.SetActive(false);
         this.lastFightEnvironment.SetActive(false);
+        this.malManEnvironment.SetActive(false);
     }
 }

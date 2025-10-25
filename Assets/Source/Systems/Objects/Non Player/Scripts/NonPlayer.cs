@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -16,12 +17,23 @@ public class NonPlayer : MonoBehaviour
     public cbkta_GlobalObjects cbkta_globalobjects;
 
     private bool triggedWithPlayer = false;
-    private SpriteRenderer indicator;
+    //private SpriteRenderer indicator;
+
+    private bool indicatorChildGameObject = false;
 
     void Awake()
     {
-        this.indicator = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        this.indicator.enabled = true;
+
+        //this.indicator = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        //this.indicator.enabled = true;
+
+        foreach (Transform child in transform)
+        {
+            GameObject obj = child.gameObject;
+            obj.SetActive(true);
+        }
+
+        this.indicatorChildGameObject = true;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,7 +45,8 @@ public class NonPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!this.indicator.enabled) return;
+        //if (!this.indicator.enabled) return;
+        if (!this.indicatorChildGameObject) return;
 
         if (
             this.triggedWithPlayer
@@ -43,7 +56,14 @@ public class NonPlayer : MonoBehaviour
             this.cbkta_globalstates.isInteractionTrigger
             )
         {
-            this.indicator.enabled = false;
+            foreach (Transform child in transform)
+            {
+                GameObject obj = child.gameObject;
+                obj.SetActive(false);
+            }
+
+            //this.indicator.enabled = false;
+            this.indicatorChildGameObject = false;
         }
     }
 

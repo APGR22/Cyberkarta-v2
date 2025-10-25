@@ -1,5 +1,13 @@
 ﻿using UnityEngine;
 
+public enum GroundType
+{
+    None,
+    Ground, //like dirt
+    Floor,
+    Concrete,
+}
+
 public class Player : MonoBehaviour
 {
     //informasi luar
@@ -27,15 +35,32 @@ public class Player : MonoBehaviour
     private float jumpTimer = 0;
     private bool isGrounded = false;
 
+    //informasi lain
+    private GroundType groundType;
+
     /// <summary>
     /// Dipakai oleh Animation Event pada Animator untuk memicu suara langkah kaki.
     /// </summary>
     public void SFXPlayPlayerMovement()
     {
         SoundSFXMain soundSFXMain = this.cbkta_globalui.soundManagerLogic.soundSFXMain;
+        SoundMainData2D soundMainData2D = new();
+
+        switch (this.groundType)
+        {
+            case GroundType.Ground:
+                soundMainData2D = soundSFXMain.playerGroundFootsteps;
+                break;
+            case GroundType.Floor:
+                soundMainData2D = soundSFXMain.playerFloorFootsteps;
+                break;
+            case GroundType.Concrete:
+                soundMainData2D = soundSFXMain.playerConcreteFootsteps;
+                break;
+        }
 
         soundSFXMain.PlayRandomOnRange(
-            soundSFXMain.footsteps
+            soundMainData2D
         );
     }
 
@@ -137,17 +162,26 @@ public class Player : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         //tabrakan dengan tanah
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("Concrete"))
         {
             this.isGrounded = true;
             this.isJumped = false;
+
+            if (collision.gameObject.CompareTag("Ground")) this.groundType = GroundType.Ground;
+            if (collision.gameObject.CompareTag("Floor")) this.groundType = GroundType.Floor;
+            if (collision.gameObject.CompareTag("Concrete")) this.groundType = GroundType.Concrete;
         }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
         //melepas tabrakan dengan tanah
-        if (collision.gameObject.CompareTag("Ground")) this.isGrounded = false;
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("Concrete"))
+        {
+            this.isGrounded = false;
+
+            this.groundType = GroundType.None;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)

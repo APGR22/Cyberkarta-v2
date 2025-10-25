@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,11 +11,15 @@ public class Fight : MonoBehaviour
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalStates cbkta_globalstates;
     public cbkta_GlobalLogicHelper cbkta_globallogichelper;
+    public cbkta_GlobalLogic cbkta_globallogic;
+
+    [Header("Fight System")]
     public VisualShake visualShake;
     public GameObject panel;
     public GameObject prefabKeyCombination;
     public GameObject parentForKeyCombination;
     public Slider timer;
+    public FightStatus fightStatus;
 
     /// <summary>
     /// Shared and set by <see cref="SceneDirector"/>
@@ -22,22 +27,18 @@ public class Fight : MonoBehaviour
     public int fightIndex = 0;
 
     [Header("Determinator")]
-    private bool shakeCamera = false;
-    private bool shakePanel = true;
 
     private System.Random randomSystem;
 
     private int lastRandomValue = -1;
-    private int sameRandomValueCount = 0;
-    private int limitRandomValueCount = 0;
 
     private bool stopTimer = false;
 
-    private int fightTimes = 0;
-    private int fightTimeCount = 1; //hitungannya segera bertambah setelah melakukan, jadi 1 kali
+    private int totalChancePoint;
+    private int totalPlayerSuccessPoint;
+    private int totalPlayerFailedPoint;
 
     private bool run = false;
-    private bool isAnimationEnded = false;
     private bool isShaken = false;
 
     private List<FightArrowController> fightArrowControllerObjects = new();
@@ -97,15 +98,6 @@ public class Fight : MonoBehaviour
 
         this.lastRandomValue = randomValue;
 
-        if (randomValue == this.lastRandomValue)
-        {
-            this.sameRandomValueCount++;
-        }
-        else
-        {
-            this.sameRandomValueCount = 0;
-        }
-
         return randomValue;
     }
 
@@ -128,9 +120,6 @@ public class Fight : MonoBehaviour
             fightArrowController.Init(GetRandomValue());
             this.fightArrowControllerObjects.Add(fightArrowController);
         }
-
-        //akhir
-        this.isAnimationEnded = false;
     }
 
     void DestroyObjects()
@@ -186,22 +175,45 @@ public class Fight : MonoBehaviour
 
         //setup
 
-        StatsController enemy_statscontroller = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<StatsController>();
-        MainStatsData enemy_statsdata = enemy_statscontroller.GetMainStats();
-
-        StatsController player_statscontroller = this.cbkta_globalobjects.player.GetComponent<StatsController>();
-        MainStatsData player_statsdata = player_statscontroller.GetMainStats();
+        SoundManagerLogic soundManagerLogic = this.cbkta_globalui.soundManagerLogic;
+        SoundSFXMain soundSFXMain = soundManagerLogic.soundSFXMain;
+        SoundEventMusicMain soundEventMusicMain = soundManagerLogic.soundEventMusicMain;
 
         //mulai
 
+            // masih ada panah dan timer belum habis
         if (this.fightArrowControllerObjectsIndex < this.fightArrowControllerObjects.Count && this.timer.value > 0)
         {
-            bool isKeyPressedCorrectly = this.fightArrowControllerObjects[this.fightArrowControllerObjectsIndex].IsKeyPressedCorrectly();
-            bool isKeyPressedWrongly = this.fightArrowControllerObjects[this.fightArrowControllerObjectsIndex].IsKeyPressedWrongly();
+            //setup
+            FightArrowController fightArrowController = this.fightArrowControllerObjects[this.fightArrowControllerObjectsIndex];
+            SoundMainData fightArrowSFX = new();
+
+            //mulai
+
+            bool isKeyPressedCorrectly = fightArrowController.IsKeyPressedCorrectly();
+            bool isKeyPressedWrongly = fightArrowController.IsKeyPressedWrongly();
 
             if (isKeyPressedCorrectly)
             {
                 this.fightArrowControllerObjects[this.fightArrowControllerObjectsIndex].Explosion();
+                switch (fightArrowController.arrowType)
+                {
+                    case FightDataType.arrowUp:
+                        fightArrowSFX = soundSFXMain.fightArrowUp;
+                        break;
+                    case FightDataType.arrowDown:
+                        fightArrowSFX = soundSFXMain.fightArrowDown;
+                        break;
+                    case FightDataType.arrowLeft:
+                        fightArrowSFX = soundSFXMain.fightArrowLeft;
+                        break;
+                    case FightDataType.arrowRight:
+                        fightArrowSFX = soundSFXMain.fightArrowRight;
+                        break;
+                }
+                soundSFXMain.Play(fightArrowSFX);
+
+                fightArrowController.Explosion();
                 this.fightArrowControllerObjectsIndex++;
 
                 //jika di index terakhir
@@ -218,7 +230,10 @@ public class Fight : MonoBehaviour
             else if (isKeyPressedWrongly)
             {
                 //player gagal menyerang dan berakhir diserang musuh
-                enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
+                //enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
+                this.totalPlayerFailedPoint++;
+
+                soundSFXMain.PlayRandomOnRange(soundSFXMain.fightMissClick);
 
                 //getar
                 if (!this.isShaken)
@@ -252,33 +267,25 @@ public class Fight : MonoBehaviour
                 //ulangi
                 this.Restart();
             }
+
         }
+        // jika panah berhasil ditekan semua dan timer belum habis, atau semuanya sudah selesai
         else
         {
             //if (this.fightTimeCount == this.fightTimes && this.fightArrowControllerObjects.Last().isAnimationEnded)
 
-            //sesi dan animasi fight sudah selesai
+            //jika sesi dan animasi fight sudah selesai
             if (this.fightArrowControllerObjects.Last().isAnimationEnded)
             {
                 //player berhasil menyerang musuh
-                player_statscontroller.Attack(this.cbkta_globalobjects.playerTriggeredWithObject);
+                //player_statscontroller.Attack(this.cbkta_globalobjects.playerTriggeredWithObject);
+                this.totalPlayerSuccessPoint++;
 
                 //reset
                 this.timer.value = this.timer.maxValue;
 
-                //jika nyawa musuh habis
-                if (enemy_statsdata.healthPoint == 0)
-                {
-                    //buat untuk exit dari fight
-
-                    //trigger ke fungsi OnDisable()
-                    gameObject.SetActive(false);
-                }
-                //lanjut saja
-                else
-                {
-                    this.Restart();
-                }
+                //lanjut
+                this.Restart();
             }
 
             //setup untuk berhenti atau lanjut ke berikutnya, bergantung terhadap nilai berapa banyak kali
@@ -287,17 +294,14 @@ public class Fight : MonoBehaviour
         //hasil
 
 
-        //jika health player sudah habis duluan
-        if (player_statsdata.healthPoint == 0)
-        {
-            //nonaktifkan Fight
-            gameObject.SetActive(false);
-        }
-
+        //jika timer habis
         if (this.timer.value == 0)
         {
             //player gagal menyerang dan berakhir diserang musuh
-            enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
+            //enemy_statscontroller.Attack(this.cbkta_globalobjects.player);
+            this.totalPlayerFailedPoint++;
+
+            soundSFXMain.PlayRandomOnRange(soundSFXMain.fightMissClick);
 
             //getar
             if (!this.isShaken)
@@ -322,15 +326,60 @@ public class Fight : MonoBehaviour
             //reset
             this.Restart();
         }
+
+        this.fightStatus.successSlider.value = (float) this.totalPlayerSuccessPoint / (float) this.totalChancePoint;
+        this.fightStatus.failedSlider.value = (float) this.totalPlayerFailedPoint / (float) this.totalChancePoint;
+
+        //cek keberhasilan
+        if (this.totalPlayerSuccessPoint > (this.totalChancePoint/2))
+        {
+            this.fightStatus.Win();
+
+            this.run = false;
+
+            this.cbkta_globallogic.ExecuteFuncOnSeconds(() =>
+            {
+                this.gameObject.SetActive(false);
+            }, .5f);
+        }
+        if (this.totalPlayerFailedPoint > (this.totalChancePoint/2))
+        {
+            this.fightStatus.Lose();
+
+            foreach (FightArrowController objFightArrowController in this.fightArrowControllerObjects)
+            {
+                objFightArrowController.SetError();
+            }
+
+            this.run = false;
+
+            this.cbkta_globallogic.ExecuteFuncOnSeconds(this.cbkta_globallogic.RestartScene, .1f);
+
+            //this.gameObject.SetActive(false);
+        }
     }
 
     void OnEnable()
     {
         //setup
-        this.fightTimes = this.randomSystem.Next(5, 8+1);
-        this.fightTimeCount = 1;
-        FightDataTemplate obj = this.cbkta_globalobjects.playerTriggeredWithObject.GetComponent<FightDataTemplate>();
-        this.fightDataCache = obj.data[this.fightIndex];
+
+        GameObject enemy = this.cbkta_globalobjects.playerTriggeredWithObject;
+
+        FightDataTemplate enemyFightDataTemplate = enemy.GetComponent<FightDataTemplate>();
+
+        StatsController enemyStatsController = enemy.GetComponent<StatsController>();
+        MainStatsData enemyStatsData = enemyStatsController.GetMainStats();
+
+        //settings
+        this.totalChancePoint = enemyStatsData.totalChance;
+
+        //reset
+        this.totalPlayerSuccessPoint = 0;
+        this.totalPlayerFailedPoint = 0;
+
+        //cache
+
+        this.fightDataCache = enemyFightDataTemplate.data[this.fightIndex];
 
         this.SpawnObjects();
 
@@ -352,6 +401,7 @@ public class Fight : MonoBehaviour
         //kirim sinyal event
         this.cbkta_globalui.levelDirectorMain.SendEvent(
             objFightDataTemplate.eventNameForLevelDirectorMain,
+            this.gameObject,
             this.GetType(),
             System.Reflection.MethodBase.GetCurrentMethod().Name,
             playerStatsController,
@@ -365,6 +415,7 @@ public class Fight : MonoBehaviour
         this.run = false;
         this.cbkta_globalstates.isFightDone = true;
         this.stopTimer = false;
-        this.fightDataCache = null; //destroy
+        // destroy
+        this.fightDataCache = null;
     }
 }

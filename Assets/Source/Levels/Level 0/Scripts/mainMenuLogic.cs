@@ -1,18 +1,21 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class mainMenuLogic : MonoBehaviour
 {
     public GameObject objectTracking;
+    public SoundManagerLogic soundManagerLogic;
 
     void Move()
     {
-        this.objectTracking.transform.Translate(new Vector2(5f * Time.deltaTime, 0));
+        this.objectTracking.transform.Translate(Vector2.left * 5f * Time.deltaTime);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        this.Move();
+        SoundBGMMain soundBGMMain = this.soundManagerLogic.soundBGMMain;
+        soundBGMMain.Play(soundBGMMain.mainMenuBGM);
     }
 
     // Update is called once per frame

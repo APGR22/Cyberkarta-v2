@@ -4,16 +4,21 @@ public class SoundBGMMain : MonoBehaviour
 {
     public SoundManagerLogic soundManagerLogic;
 
-    [Header("Downtown")]
-    public AudioClip downtownBGM;
+    public SoundMainData mainMenuBGM = new();
+    public SoundMainData downtownBGM = new();
+    public SoundMainData brainDRealmBGM = new();
+    public SoundMainData cyberkartaBGM = new();
 
-    [Header("BrainD Realm")]
-    public AudioClip brainDRealmBGM;
-
-public void Play(AudioClip bgm)
+    public void Play(SoundMainData bgm)
     {
-        soundManagerLogic.BGMAudioSource.clip = bgm;
-        soundManagerLogic.BGMAudioSource.Play();
+        //setup
+        AudioSource speaker = this.soundManagerLogic.BGMAudioSource;
+
+        //settings
+        speaker.clip = bgm.sound;
+        speaker.volume = this.soundManagerLogic.GetBGMVolume(bgm.volume);
+
+        speaker.Play();
     }
 
     public void Stop()

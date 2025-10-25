@@ -11,6 +11,8 @@ public class FightArrowController : MonoBehaviour
 
     private KeyCode keyCode;
 
+    private bool run = true;
+
     public void Explosion()
     {
         Animator animator = GetComponent<Animator>();
@@ -92,6 +94,12 @@ public class FightArrowController : MonoBehaviour
         this.keyCode = this.ConvertToKeyCode(this.arrowType);
     }
 
+    public void SetError()
+    {
+        this.image.sprite = null;
+        this.run = false;
+    }
+
     private KeyCode ConvertToKeyCode(FightDataType arrowType)
     {
         switch (arrowType)
@@ -117,6 +125,8 @@ public class FightArrowController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!this.run) return;
+
         this.image.sprite = this.spriteRenderer.sprite;
         this.image.color = this.spriteRenderer.color;
     }

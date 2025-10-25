@@ -11,4 +11,6 @@ public class MainStatsData
     public int maxHealthPoint = 0;
     public int minDamagePower = 0;
     public int maxDamagePower = 0;
+
+    public int totalChance = 5;
 }

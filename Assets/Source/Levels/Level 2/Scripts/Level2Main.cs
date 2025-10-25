@@ -1,37 +1,24 @@
 using UnityEngine;
 
-public class Level2Main : MonoBehaviour
+public class Level2Main : LevelMain
 {
-    public cbkta_GlobalUI cbkta_globalui;
-    public cbkta_GlobalLogic cbkta_globallogic;
-
     void Init()
     {
         //setup
 
-        FadeController fadeController = this.cbkta_globalui.fadeController;
-
         SoundManagerLogic soundManagerLogic = this.cbkta_globalui.soundManagerLogic;
         SoundBGMMain soundBGMMain = soundManagerLogic.soundBGMMain;
+        SoundEnvironmentsMain soundEnvironmentsMain = soundManagerLogic.soundEnvironmentsMain;
 
         //settings
-        this.cbkta_globallogic.FreezePlayer();
-
-        // memastikan
-        fadeController.gameObject.SetActive(true);
-        fadeController.value = 1;
-
-        fadeController.FadeOut(() =>
-        {
-            this.cbkta_globallogic.UnfreezePlayer();
-        });
-
         soundBGMMain.Play(soundBGMMain.downtownBGM);
+        soundEnvironmentsMain.Play(soundEnvironmentsMain.level2);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        this.ParentInit();
         this.Init();
     }
 

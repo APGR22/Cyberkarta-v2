@@ -13,7 +13,7 @@ public class FadeController : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
-    private bool isInFade = false;
+    public bool isInFade = false;
 
     [ContextMenu("Fade In")]
     public void FadeIn(Action funcEnd = null)
@@ -24,8 +24,8 @@ public class FadeController : MonoBehaviour
         //Karena awalnya tidak terlihat, jadi diaktifkan dulu (dan harus karena StartCoroutine())
         this.gameObject.SetActive(true);
 
-        StartCoroutine(this.Fade(false, funcEnd));
         this.isInFade = true;
+        StartCoroutine(this.Fade(false, funcEnd));
     }
 
     [ContextMenu("Fade Out")]
@@ -34,6 +34,10 @@ public class FadeController : MonoBehaviour
         if (this.isInFade) return;
         if (this.value == 0) return;
 
+        //Pastikan untuk aktif
+        this.gameObject.SetActive(true);
+
+        this.isInFade = true;
         StartCoroutine(this.Fade(true, () =>
         {
             if (funcEnd != null) funcEnd();
@@ -41,7 +45,6 @@ public class FadeController : MonoBehaviour
             //Karena tidak terlihat, jadi dinonaktifkan saja
             this.gameObject.SetActive(false);
         }));
-        this.isInFade = true;
     }
 
     /// <summary>
@@ -54,11 +57,13 @@ public class FadeController : MonoBehaviour
         float fadeValue = 0;
         float fadeTimeCache = this.fadeTime;
 
-        while (fadeTimeCount < this.fadeTime)
+        //print(("Fade", fadeout));
+
+        while (fadeTimeCount < fadeTimeCache)
         {
             fadeTimeCount += Time.deltaTime;
 
-            fadeValue = fadeTimeCount / fadeTime;
+            fadeValue = fadeTimeCount / fadeTimeCache;
             this.value = (fadeout ? 1 - fadeValue : fadeValue);
 
             yield return null;

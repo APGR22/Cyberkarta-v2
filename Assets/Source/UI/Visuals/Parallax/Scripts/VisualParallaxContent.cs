@@ -179,7 +179,7 @@ public class VisualParallaxContent : MonoBehaviour
         //menambahkan ke daftar
         this.spawnObjects.Add(firstObj);
 
-        //batas aman loop agar tidak selamanya
+        //batas aman loopSFX agar tidak selamanya
         int limitLoop = 20;
         int loopCount = 0;
 

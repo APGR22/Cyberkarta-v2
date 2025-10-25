@@ -144,7 +144,7 @@ public class SceneDirector : MonoBehaviour
 
     bool CompareWithSceneTags(GameObject obj)
     {
-        if (obj.CompareTag("DialogTrigger")) return true;
+        if (obj.CompareTag(this.cbkta_globaltags.dialogTrigger)) return true;
         if (obj.CompareTag(this.cbkta_globaltags.enemy)) return true;
         if (obj.CompareTag(this.cbkta_globaltags.npc)) return true;
 
@@ -203,8 +203,13 @@ public class SceneDirector : MonoBehaviour
             switch (this.listSceneData[this.sceneIndex])
             {
                 case SceneData.Dialog:
-                    //jika dialog dan belum interaksi, skip hingga ada interaksi.
-                    if (!this.cbkta_globalstates.isInteractionTrigger) return;
+                    //(selain DialogTrigger) jika dialog dan belum interaksi, skip hingga ada interaksi.
+                    if (
+                        !obj.CompareTag(this.cbkta_globaltags.dialogTrigger)
+                        &&
+                        !this.cbkta_globalstates.isInteractionTrigger
+                        )
+                        return;
 
                     this.EnterDialogueScene();
                     break;
@@ -314,6 +319,7 @@ public class SceneDirector : MonoBehaviour
             //kirim sinyal event
             this.cbkta_globalui.levelDirectorMain.SendEvent(
                 objSceneDataTemplate.eventNameForLevelDirectorMain,
+                this.gameObject,
                 this.GetType(),
                 System.Reflection.MethodBase.GetCurrentMethod().Name,
                 playerStatsController,

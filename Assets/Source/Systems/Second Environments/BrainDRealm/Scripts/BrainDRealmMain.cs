@@ -8,12 +8,15 @@ public class BrainDRealmMain : MonoBehaviour
     public cbkta_GlobalUI cbkta_globalui;
     public Animator secondPlayerAnimator;
 
+    [Header("System")]
+    public RectTransform fightStatus;
+
     private bool hasInit = false;
 
     private List<Action> listFuncOnAttack = new();
 
     private Vector2 previousFightPosition;
-    private AudioClip previousBGM;
+    private SoundMainData previousBGM;
 
     void Init()
     {
@@ -67,10 +70,11 @@ public class BrainDRealmMain : MonoBehaviour
         //cache
         this.previousFightPosition = fightRectTransform.anchoredPosition;
 
-        this.previousBGM = soundManagerLogic.BGMAudioSource.clip;
+        this.previousBGM = new(soundManagerLogic.BGMAudioSource.clip, soundManagerLogic.GetCurrentBGMClipVolume());
 
         //settings
         fightRectTransform.anchoredPosition = new(0, -117);
+        this.fightStatus.anchoredPosition = new(0, -43.6f);
 
         soundBGMMain.Play(soundBGMMain.brainDRealmBGM);
     }

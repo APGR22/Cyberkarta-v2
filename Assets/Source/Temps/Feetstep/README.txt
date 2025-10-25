@@ -1,1 +1,0 @@
-Footsteps untuk tanah

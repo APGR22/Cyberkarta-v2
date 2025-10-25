@@ -58,6 +58,11 @@ public class cbkta_GlobalLogic : MonoBehaviour
         SceneManager.LoadScene(this.cbkta_globalstates.sceneIndex);
     }
 
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(this.cbkta_globalstates.sceneIndex);
+    }
+
     public void FreezePlayer()
     {
         //if (this.playerPositionStayedOn == Vector3.zero)
@@ -108,6 +113,35 @@ public class cbkta_GlobalLogic : MonoBehaviour
         while (frameCount < nextFrame)
         {
             frameCount++;
+            yield return null;
+        }
+
+        func();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// If <paramref name="seconds"/> is 0, it means now.
+    /// </remarks>
+    /// <param name="func"></param>
+    /// <param name="seconds">0 means now</param>
+    public void ExecuteFuncOnSeconds(Action func, float seconds = 1)
+    {
+        if (seconds < 0) seconds = 0;
+        if (func == null) return;
+
+        StartCoroutine(this.CoroutineExecuteFuncOnSeconds(func, seconds));
+    }
+
+    IEnumerator CoroutineExecuteFuncOnSeconds(Action func, float seconds)
+    {
+        float timer = 0;
+
+        while (timer < seconds)
+        {
+            timer += Time.deltaTime;
             yield return null;
         }
 

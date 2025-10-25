@@ -33,12 +33,14 @@ public abstract class LevelDirectorMain : MonoBehaviour
     /// On parameter <paramref name="methodCaller"/>, use <c>System.Reflection.MethodBase.GetCurrentMethod().Name</c> to avoid typos.
     /// </remarks>
     /// <param name="eventName"></param>
+    /// <param name="gameObject"></param>
     /// <param name="classTypeCaller">use <c>this.GetType()</c></param>
     /// <param name="methodCaller">use <c>System.Reflection.MethodBase.GetCurrentMethod().Name</c></param>
     /// <param name="playerStatsController"></param>
     /// <param name="enemyStatsController"></param>
     public void SendEvent(
         string eventName,
+        GameObject gameObject,
         System.Type classTypeCaller,
         string methodCaller,
         StatsController playerStatsController = null,
@@ -49,6 +51,7 @@ public abstract class LevelDirectorMain : MonoBehaviour
             new LevelDirectorData
             {
                 eventName = eventName,
+                gameObject = gameObject,
                 classTypeCaller = classTypeCaller,
                 methodNameToCall = methodCaller,
                 playerStatsController = playerStatsController,
@@ -75,6 +78,16 @@ public abstract class LevelDirectorMain : MonoBehaviour
             {
                 checklist[eventTrigged.eventName] = eventTrigged;
             }
+        }
+    }
+
+    public void RemoveEvent(string key)
+    {
+        for (int i = 0; i < this.events.Count; i++)
+        {
+            if (this.events[i].eventName != key) continue;
+
+            this.events.RemoveAt(i);
         }
     }
 

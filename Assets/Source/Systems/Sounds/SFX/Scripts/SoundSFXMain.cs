@@ -5,32 +5,51 @@ public class SoundSFXMain : MonoBehaviour
     public SoundManagerLogic soundManagerLogic;
 
     [Header("Player")]
-    public AudioClip[] footsteps;
+    public SoundMainData2D playerGroundFootsteps;
+    public SoundMainData2D playerFloorFootsteps;
+    public SoundMainData2D playerConcreteFootsteps;
 
     [Header("Dialogue")]
-    public AudioClip[] humanDialogueVoice;
-    public AudioClip[] robotDialogueVoice;
+    public SoundMainData2D humanDialogueVoice;
+    public SoundMainData2D robotDialogueVoice;
 
-    public void Play(AudioClip sfx)
+    [Header("Fight")]
+    public SoundMainData fightArrowUp;
+    public SoundMainData fightArrowDown;
+    public SoundMainData fightArrowLeft;
+    public SoundMainData fightArrowRight;
+    public SoundMainData2D fightMissClick;
+    public SoundMainData2D fightAttack;
+
+    public void Play(SoundMainData sfx)
     {
-        soundManagerLogic.SFXAudioSource.PlayOneShot(sfx);
+        //setup
+        AudioSource speaker = this.soundManagerLogic.SFXAudioSource;
+
+        //settings
+        speaker.volume = this.soundManagerLogic.GetSFXVolume(sfx.volume);
+        speaker.PlayOneShot(sfx.sound);
     }
 
-    public void PlayRandomOnRange(AudioClip[] sfxArray,
+    public void PlayRandomOnRange(SoundMainData2D sfxArray,
         float minPitch = 0.8f, float maxPitch = 1.2f)
     {
-        int randomIndex = Random.Range(0, sfxArray.Length);
-        AudioClip sfx = sfxArray[randomIndex];
+        //setup
+        int randomIndex = Random.Range(0, sfxArray.sounds.Count);
+        AudioClip sfx = sfxArray.sounds[randomIndex];
+        AudioSource speaker = soundManagerLogic.SFXAudioSource;
 
         //float randomPitch = Random.Range(minPitch, maxPitch);
         //soundManagerLogic.SFXAudioSource.pitch = randomPitch;
 
-        soundManagerLogic.SFXAudioSource.PlayOneShot(sfx);
+        //settings
+        speaker.volume = this.soundManagerLogic.GetSFXVolume(sfxArray.volume);
+        speaker.PlayOneShot(sfx);
     }
 
     public void Stop()
     {
-        soundManagerLogic.SFXAudioSource.Stop();
+        this.soundManagerLogic.SFXAudioSource.Stop();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

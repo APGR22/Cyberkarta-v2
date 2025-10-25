@@ -173,6 +173,7 @@ public class Dialogue : MonoBehaviour
         //kirim sinyal event
         this.cbkta_globalui.levelDirectorMain.SendEvent(
             this.dialogue.eventNameForLevelDirectorMain,
+            this.gameObject,
             this.GetType(),
             MethodBase.GetCurrentMethod().Name
         );

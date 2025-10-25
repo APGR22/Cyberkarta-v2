@@ -9,6 +9,9 @@ TagManager:
   - DialogTrigger
   - Canvas
   - NPC
+  - Next Level Entry Portal
+  - Floor
+  - Concrete
   layers:
   - Default
   - TransparentFX

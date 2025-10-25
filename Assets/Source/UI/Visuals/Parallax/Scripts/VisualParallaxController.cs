@@ -5,6 +5,9 @@ public class VisualParallaxController : MonoBehaviour
 {
     public GameObject objectTracking;
 
+    [Header("Settings")]
+    public bool dontReverse = false;
+
     private List<VisualParallaxContent> contents = new();
     private float speedOneDirection = 0f;
     private Vector2 previousObjectTrackingPosition = Vector2.zero;
@@ -39,9 +42,18 @@ public class VisualParallaxController : MonoBehaviour
 
         Vector2 identity = new(xIdentity * objectTrackingXIdentity, yIdentity * objectTrackingYIdentity);
 
+        float f;
         //menghitung kecepatan
-        //kecepatan penuh - (kecepatan efek parallax. Semakin besar nilai Z, semakin kecil hasilnya)
-        float f = 1 - (1 / (1 + parallaxContent.zDistance));
+        if (this.dontReverse)
+        {
+            //kecepatan efek parallax. Semakin besar nilai Z, semakin besar hasilnya
+            f = 1 / (1 + parallaxContent.zDistance);
+        }
+        else
+        {
+            //kecepatan penuh - (kecepatan efek parallax. Semakin besar nilai Z, semakin kecil hasilnya)
+            f = 1 - (1 / (1 + parallaxContent.zDistance));
+        }
 
         //pergerakan objek yang diikuti, dikali dengan nilai kecepatan 0-1
         Vector2 speed = new(movement.x * f, movement.y * f);

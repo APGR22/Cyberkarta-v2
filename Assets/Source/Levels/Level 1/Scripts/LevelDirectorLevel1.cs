@@ -3,7 +3,12 @@ using UnityEngine;
 
 public class LevelDirectorLevel1 : LevelDirectorMain
 {
-    private List<LevelDirectorData> eventsRegistered = new();
+    public GameObject guides;
+
+    private List<LevelDirectorData> eventsRegistered = new List<LevelDirectorData>
+    {
+        new("PlayerDialogueDone"),
+    };
     private Dictionary<string, LevelDirectorData> checklist;
 
     protected override List<LevelDirectorData> GetEventsRegistered() => eventsRegistered;
@@ -18,5 +23,10 @@ public class LevelDirectorLevel1 : LevelDirectorMain
     void Update()
     {
         this.UpdateChecklistEventsRegistered(this.checklist);
+
+        if (this.checklist["PlayerDialogueDone"] != null)
+        {
+            this.guides.SetActive(true);
+        }
     }
 }
