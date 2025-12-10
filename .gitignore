@@ -1,6 +1,5 @@
 #Semua
 *
-ProjectSettings/EditorBuildSettings.asset
 
 #whitelist wajib meski masih bisa bekerja (seharusnya)
 !.gitignore
@@ -9,8 +8,16 @@ ProjectSettings/EditorBuildSettings.asset
 !Assets
 !ProjectSettings
 !UserSettings
+!Packages
 
 #whitelist files in directory and subdirectory
 !Assets/**
 !ProjectSettings/**
 !UserSettings/**
+!Packages/**
+
+#blacklist directory in whitelist subdirectory
+Assets/Source/Temps
+
+#blacklist files in whitelist subdirectory
+Assets/Source/Temps/**
