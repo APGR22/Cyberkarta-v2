@@ -6,14 +6,17 @@ public class LastFightMain : MonoBehaviour
 {
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalUI cbkta_globalui;
-    public Animator secondPlayerAnimator;
+    public Animator secondPlayerAnimator; //second karena bukan yang utama
+    public Animator secondEnemyAnimator; //second karena bukan yang utama
 
     [Header("System")]
     public RectTransform fightStatus;
 
     private bool hasInit = false;
 
+    //memudahkan penambahan fungsi pada event yang sama di masa depan
     private List<Action> listFuncOnAttack = new();
+    private List<Action> listFuncOnEnemyAttack = new();
 
     private Vector2 previousFightPosition;
     private SoundMainData previousBGM;
@@ -32,11 +35,21 @@ public class LastFightMain : MonoBehaviour
             this.secondPlayerAnimator.SetTrigger("Attack");
         });
 
+        this.listFuncOnEnemyAttack.Add(() =>
+        {
+            this.secondEnemyAnimator.SetTrigger("Attack");
+        });
+
         //apply
 
         foreach (Action func in this.listFuncOnAttack)
         {
             fightFight.AddFuncEventOnPlayerAttackEnemy(func);
+        }
+
+        foreach (Action func in this.listFuncOnEnemyAttack)
+        {
+            fightFight.AddFuncEventOnEnemyAttackPlayer(func);
         }
     }
 

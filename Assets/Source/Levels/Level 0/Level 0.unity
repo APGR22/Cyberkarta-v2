@@ -261,6 +261,95 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6e05468b388a774cafb6f0daa857d03, type: 3}
+--- !u!1001 &312907490
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4763542719496764625}
+    m_Modifications:
+    - target: {fileID: 5788863578006922882, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_Name
+      value: Fade
+      objectReference: {fileID: 0}
+    - target: {fileID: 5788863578006922882, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0438606
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0438606
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0438606
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.8102624
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+--- !u!114 &335553045 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5299015022637415361, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+  m_PrefabInstance: {fileID: 312907490}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 089806f7bea0a664ba6a2abbdde0a8a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FadeController
+--- !u!4 &335553047 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7787496608525801863, guid: be5cae9614b95674da38d7881f087a69, type: 3}
+  m_PrefabInstance: {fileID: 312907490}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &430603130 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4895897567966431241, guid: 892c199441af9c440bf283eeeaa31437, type: 3}
@@ -775,6 +864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3890ffb56ae8a504eae94ce3d98f3043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::mainMenuLogic
+  fadeController: {fileID: 335553045}
   objectTracking: {fileID: 2096093982}
   soundManagerLogic: {fileID: 443539933}
 --- !u!1 &1396241102
@@ -3089,6 +3179,7 @@ RectTransform:
   - {fileID: 2501089905904401762}
   - {fileID: 951670633039770892}
   - {fileID: 852290264}
+  - {fileID: 335553047}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

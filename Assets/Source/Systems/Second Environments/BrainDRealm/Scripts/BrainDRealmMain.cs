@@ -6,13 +6,14 @@ public class BrainDRealmMain : MonoBehaviour
 {
     public cbkta_GlobalObjects cbkta_globalobjects;
     public cbkta_GlobalUI cbkta_globalui;
-    public Animator secondPlayerAnimator;
+    public Animator secondPlayerAnimator; //second karena bukan yang utama
 
     [Header("System")]
     public RectTransform fightStatus;
 
     private bool hasInit = false;
 
+    //memudahkan penambahan fungsi pada event yang sama di masa depan
     private List<Action> listFuncOnAttack = new();
 
     private Vector2 previousFightPosition;

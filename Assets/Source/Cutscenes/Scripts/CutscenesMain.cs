@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CutscenesMain : MonoBehaviour
@@ -9,6 +11,11 @@ public class CutscenesMain : MonoBehaviour
     public cbkta_GlobalLogic cbkta_globallogic;
     public Image cutsceneRenderer;
     public List<CutsceneData> cutscenes = new();
+
+    [Header("Settings")]
+
+    [Tooltip("Set nextSceneIndex to -1 to go to the next scene in build order, -2 to go to the previous scene, or any other non-negative integer to go to that specific scene index.")]
+    public int nextSceneIndex = -1;
 
     private FadeController fadeController;
 
@@ -91,7 +98,24 @@ public class CutscenesMain : MonoBehaviour
         this.fadeController.value = 0;
 
         //fade in lalu menuju ke scene berikutnya
-        this.fadeController.FadeIn(this.cbkta_globallogic.NextScene);
+        Action nextSceneFunc = null;
+
+        switch (this.nextSceneIndex)
+        {
+            case -1:
+                nextSceneFunc = this.cbkta_globallogic.NextScene;
+                break;
+            case -2:
+                nextSceneFunc = this.cbkta_globallogic.PreviousScene;
+                break;
+            default:
+                nextSceneFunc = () =>
+                {
+                    SceneManager.LoadScene(this.nextSceneIndex);
+                };
+                break;
+        }
+        this.fadeController.FadeIn(nextSceneFunc);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

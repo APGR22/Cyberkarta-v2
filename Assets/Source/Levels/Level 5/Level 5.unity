@@ -747,9 +747,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06ab9cd3c94c2b439ae6b798cc34c2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelDirectorLevel5
+  cbkta_globallogic: {fileID: 306676325}
   blackScreen: {fileID: 799201489}
   ranuBefore: {fileID: 9068658311640159836}
   ranuAfter: {fileID: 1406216401}
+  soundManagerLogic: {fileID: 2013553728}
 --- !u!114 &637088269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2374,10 +2376,12 @@ MonoBehaviour:
   data:
   - minArrowCounts: 5
     maxArrowCounts: 6
+    maxTimerValue: 2
     shakeCamera: 1
     shakePanel: 1
   - minArrowCounts: 6
     maxArrowCounts: 7
+    maxTimerValue: 2.3
     shakeCamera: 1
     shakePanel: 1
   eventNameForLevelDirectorMain: FightDone
@@ -2505,7 +2509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneDataTemplate
   scenes: 0000000002000000010000000300000000000000020000000100000003000000
   hasScene: 0
-  eventNameForLevelDirectorMain: 
+  eventNameForLevelDirectorMain: LastBossDone
 --- !u!114 &8177856003246477386
 MonoBehaviour:
   m_ObjectHideFlags: 0

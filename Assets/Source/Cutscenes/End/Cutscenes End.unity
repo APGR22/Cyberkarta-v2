@@ -903,6 +903,11 @@ MonoBehaviour:
     durationInSeconds: 3
     fadeOutDurationInSeconds: 0
     fadeInDurationInSeconds: 0
+  - cutscene: {fileID: -8145550114512015934, guid: 6f7f37c72ac35d3428f241db7cbc7dd7, type: 3}
+    durationInSeconds: 3
+    fadeOutDurationInSeconds: 0
+    fadeInDurationInSeconds: 0
+  nextSceneIndex: 0
 --- !u!1 &1854256069
 GameObject:
   m_ObjectHideFlags: 0

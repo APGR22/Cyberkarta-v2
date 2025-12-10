@@ -41,9 +41,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Source/Cutscenes/End/Cutscenes End.unity
     guid: 31191e2d6bc8684419f718de2016a3db
-  - enabled: 1
-    path: Assets/Source/Levels/Empty/Empty.unity
-    guid: f5ae9a821fc099b4ea9ea301734bf902
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 6e02ab1f01d52f344843c696877313d1, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 0f94819dfedb21c46a1e110c962b316d, type: 3}

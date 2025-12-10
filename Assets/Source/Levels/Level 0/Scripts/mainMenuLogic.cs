@@ -3,6 +3,7 @@ using UnityEngine.Rendering.Universal;
 
 public class mainMenuLogic : MonoBehaviour
 {
+    public FadeController fadeController;
     public GameObject objectTracking;
     public SoundManagerLogic soundManagerLogic;
 
@@ -16,6 +17,9 @@ public class mainMenuLogic : MonoBehaviour
     {
         SoundBGMMain soundBGMMain = this.soundManagerLogic.soundBGMMain;
         soundBGMMain.Play(soundBGMMain.mainMenuBGM);
+
+        this.fadeController.value = 1; //memastikan
+        this.fadeController.FadeOut();
     }
 
     // Update is called once per frame

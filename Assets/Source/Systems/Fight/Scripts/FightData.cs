@@ -17,6 +17,7 @@ public class FightData
 {
     public int minArrowCounts = 3;
     public int maxArrowCounts = 5;
+    public float maxTimerValue = 2;
 
     [Header("Determinator")]
     public bool shakeCamera = false;

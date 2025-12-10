@@ -899,6 +899,7 @@ MonoBehaviour:
     durationInSeconds: 6
     fadeOutDurationInSeconds: 4
     fadeInDurationInSeconds: 4
+  nextSceneIndex: -1
 --- !u!1 &1854256069
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,7 +931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CutscenesBGM
   soundManagerLogic: {fileID: 2013553728}
   bgm:
-    sound: {fileID: 8300000, guid: e2463badae581ea479ce4dbb81ec2af9, type: 3}
+    sound: {fileID: 8300000, guid: 0364b052d2627774d9118ade8dc1904b, type: 3}
     volume: 1
 --- !u!4 &1854256071
 Transform:

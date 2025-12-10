@@ -530,15 +530,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 865407536455346371, guid: 8db71a754455b61438cf7f994ca84318, type: 3}
       propertyPath: orthographic size
-      value: 5.625
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 865407536455346371, guid: 8db71a754455b61438cf7f994ca84318, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
-      value: 0
+      value: 0.03147877
       objectReference: {fileID: 0}
     - target: {fileID: 865407536455346371, guid: 8db71a754455b61438cf7f994ca84318, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
-      value: 1
+      value: 0.9370425
       objectReference: {fileID: 0}
     - target: {fileID: 865407536455346371, guid: 8db71a754455b61438cf7f994ca84318, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
@@ -903,6 +903,15 @@ MonoBehaviour:
     durationInSeconds: 3
     fadeOutDurationInSeconds: 0
     fadeInDurationInSeconds: 0
+  - cutscene: {fileID: 102430124992134264, guid: 3572ca48d1270d143bd0e75cd757c786, type: 3}
+    durationInSeconds: 2
+    fadeOutDurationInSeconds: 2
+    fadeInDurationInSeconds: 1
+  - cutscene: {fileID: 4317855746806487030, guid: 3471055baec68ef48bb82e926c6e5ea4, type: 3}
+    durationInSeconds: 2
+    fadeOutDurationInSeconds: 2
+    fadeInDurationInSeconds: 2
+  nextSceneIndex: -1
 --- !u!1 &1648129444
 GameObject:
   m_ObjectHideFlags: 0

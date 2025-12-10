@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class LevelDirectorLevel5 : LevelDirectorMain
 {
+    public cbkta_GlobalLogic cbkta_globallogic;
     public GameObject blackScreen;
     public SpriteRenderer ranuBefore;
     public GameObject ranuAfter;
+    public SoundManagerLogic soundManagerLogic;
 
     private List<LevelDirectorData> eventsRegistered = new List<LevelDirectorData>
     {
         new LevelDirectorData("FightDone"),
+        new LevelDirectorData("LastBossDone")
     };
 
     private Dictionary<string, LevelDirectorData> checklist;
@@ -44,8 +47,14 @@ public class LevelDirectorLevel5 : LevelDirectorMain
 
         if (this.FightDoneCount >= 2)
         {
-            //print("Hitamkan lalu pindah ke cutscene");
+            //Hitamkan dan mute dulu, agar latar belakang tidak tampil ketika selesai mengalahkan brain sekaligus suaranya
             this.blackScreen.SetActive(true);
+            this.soundManagerLogic.soundBGMMain.Stop();
+        }
+
+        if (this.checklist["LastBossDone"] != null)
+        {
+            this.cbkta_globallogic.NextScene();
         }
     }
 }

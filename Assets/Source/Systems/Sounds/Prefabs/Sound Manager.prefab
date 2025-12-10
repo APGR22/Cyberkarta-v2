@@ -744,7 +744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundBGMMain
   soundManagerLogic: {fileID: 8259762529121980783}
   mainMenuBGM:
-    sound: {fileID: 8300000, guid: 51f71c762fb0eba49b662e15f691e9f4, type: 3}
+    sound: {fileID: 8300000, guid: 16ff58d66f4f4e94d89bcd0e149ae026, type: 3}
     volume: 1
   downtownBGM:
     sound: {fileID: 8300000, guid: d7a7983b8e399b247a0079cc7fadd721, type: 3}
